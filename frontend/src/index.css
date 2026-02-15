@@ -1,0 +1,67 @@
+@import "tailwindcss";
+
+* {
+ /* ya scroll */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none;  /* IE/Edge purane versions */
+}
+
+::-webkit-scrollbar, 
+::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
+/* ============================================
+   QuickBite Nav Component - Custom Animations
+   ============================================ */
+
+/* Smooth slide down animation for dropdowns */
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Fade in animation for backdrop */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Apply animations to Nav elements */
+.nav-dropdown {
+  animation: slideDown 0.2s ease-out;
+}
+
+.nav-backdrop {
+  animation: fadeIn 0.2s ease-out;
+}
+
+/* Optional: Smooth scrolling for the entire app */
+@layer base {
+  * {
+    @apply scroll-smooth;
+  }
+  
+  /* Ensure backdrop-filter works in all browsers */
+  .backdrop-blur-md {
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
+  }
+}
+
+/* Optional: Custom focus styles for better accessibility */
+@layer utilities {
+  .focus-ring {
+    @apply outline-none focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-2;
+  }
+}
