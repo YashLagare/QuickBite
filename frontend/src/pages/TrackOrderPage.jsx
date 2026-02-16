@@ -90,17 +90,18 @@ import { useEffect, useState } from 'react';
 import { FaPhone, FaUser } from "react-icons/fa";
 import { IoIosArrowRoundBack } from "react-icons/io";
 import { MdCheckCircle, MdDeliveryDining, MdLocationOn, MdRestaurant } from "react-icons/md";
-import { useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import { serverUrl } from '../App';
 import DeliveryBoyTracking from '../components/DeliveryBoyTracking';
+
+import { useSocket } from '../context/SocketContext';
 
 function TrackOrderPage() {
   const { orderId } = useParams();
   const [currentOrder, setCurrentOrder] = useState();
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
-  const { socket } = useSelector(state => state.user);
+  const { socket } = useSocket();
   const [liveLocations, setLiveLocations] = useState({});
 
   const handleGetOrder = async () => {

@@ -48,7 +48,7 @@
 //       const longitude=userData.location.coordinates[0]
 //       dispatch(setLocation({ lat: latitude, lon: longitude }))
 //       getAddressByLatLng(latitude, longitude)
-   
+
 
 //   }
 
@@ -93,7 +93,7 @@
 //         const razorOrder=result.data.razorOrder
 //           openRazorpayWindow(orderId,razorOrder)
 //        }
-    
+
 //     } catch (error) {
 //       console.log(error)
 //     }
@@ -207,7 +207,7 @@
 // <span>{item.name} x {item.quantity}</span>
 // <span>₹{item.price*item.quantity}</span>
 //   </div>
- 
+
 // ))}
 //  <hr className='border-gray-200 my-2'/>
 // <div className='flex justify-between font-medium text-gray-800'>
@@ -250,7 +250,7 @@ import { useNavigate } from 'react-router-dom';
 import { ClipLoader } from 'react-spinners';
 import { serverUrl } from '../App';
 import { setAddress, setLocation } from '../redux/mapSlice';
-import { addMyOrder } from '../redux/userSlice';
+import { addMyOrder, clearCart } from '../redux/userSlice';
 
 function RecenterMap({ location }) {
   if (location.lat && location.lon) {
@@ -338,6 +338,7 @@ function CheckOut() {
 
       if (paymentMethod == "cod") {
         dispatch(addMyOrder(result.data));
+        dispatch(clearCart());
         toast.success('Order placed successfully!');
         navigate("/order-placed");
       } else {
@@ -367,6 +368,7 @@ function CheckOut() {
             orderId
           }, { withCredentials: true });
           dispatch(addMyOrder(result.data));
+          dispatch(clearCart());
           toast.success('Payment successful!');
           navigate("/order-placed");
         } catch (error) {
@@ -394,7 +396,7 @@ function CheckOut() {
 
   return (
     <div className='min-h-screen bg-gradient-to-br from-[#fff7f3] via-[#fffdfb] to-[#ffece6] flex items-center justify-center p-4 sm:p-6 relative'>
-      
+
       {/* Back Button */}
       <button
         className='absolute top-6 left-6 z-20 bg-white/80 backdrop-blur-sm p-2.5 rounded-full shadow-md hover:shadow-lg hover:-translate-y-[1px] transition-all duration-300 ease-out group'
@@ -408,7 +410,7 @@ function CheckOut() {
 
       {/* Main Content */}
       <div className='w-full max-w-4xl bg-white/80 backdrop-blur-sm rounded-3xl shadow-lg p-6 sm:p-8 space-y-6 border border-orange-50'>
-        
+
         {/* Header */}
         <div className='flex items-center gap-3 pb-4 border-b border-gray-200'>
           <div className='bg-gradient-to-br from-orange-100 to-amber-100 p-3 rounded-xl'>
@@ -426,7 +428,7 @@ function CheckOut() {
             <IoLocationSharp className='text-orange-600' />
             Delivery Location
           </h2>
-          
+
           {/* Address Search */}
           <div className='flex flex-col sm:flex-row gap-2 mb-4'>
             <input
@@ -478,14 +480,13 @@ function CheckOut() {
         <section>
           <h2 className='text-lg font-semibold mb-4 text-[#2d2d2d]'>Payment Method</h2>
           <div className='grid grid-cols-1 sm:grid-cols-2 gap-4'>
-            
+
             {/* Cash on Delivery */}
             <button
-              className={`flex items-center gap-3 rounded-xl border-2 p-4 text-left transition-all duration-300 ${
-                paymentMethod === "cod"
-                  ? "border-orange-500 bg-orange-50 shadow-md"
-                  : "border-gray-200 hover:border-gray-300 hover:shadow-sm"
-              }`}
+              className={`flex items-center gap-3 rounded-xl border-2 p-4 text-left transition-all duration-300 ${paymentMethod === "cod"
+                ? "border-orange-500 bg-orange-50 shadow-md"
+                : "border-gray-200 hover:border-gray-300 hover:shadow-sm"
+                }`}
               onClick={() => setPaymentMethod("cod")}
             >
               <span className='inline-flex h-12 w-12 items-center justify-center rounded-xl bg-green-100 flex-shrink-0'>
@@ -506,11 +507,10 @@ function CheckOut() {
 
             {/* Online Payment */}
             <button
-              className={`flex items-center gap-3 rounded-xl border-2 p-4 text-left transition-all duration-300 ${
-                paymentMethod === "online"
-                  ? "border-orange-500 bg-orange-50 shadow-md"
-                  : "border-gray-200 hover:border-gray-300 hover:shadow-sm"
-              }`}
+              className={`flex items-center gap-3 rounded-xl border-2 p-4 text-left transition-all duration-300 ${paymentMethod === "online"
+                ? "border-orange-500 bg-orange-50 shadow-md"
+                : "border-gray-200 hover:border-gray-300 hover:shadow-sm"
+                }`}
               onClick={() => setPaymentMethod("online")}
             >
               <div className='flex gap-2 flex-shrink-0'>
@@ -540,7 +540,7 @@ function CheckOut() {
         <section>
           <h2 className='text-lg font-semibold mb-4 text-[#2d2d2d]'>Order Summary</h2>
           <div className='rounded-2xl border border-gray-200 bg-gradient-to-br from-gray-50 to-orange-50/30 p-5 space-y-3'>
-            
+
             {/* Cart Items */}
             <div className='space-y-2 pb-3 border-b border-gray-200'>
               {cartItems.map((item, index) => (

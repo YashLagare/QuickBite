@@ -23,7 +23,7 @@
 // import SignIn from './pages/SignIn'
 // import SignUp from './pages/SignUp'
 // import TrackOrderPage from './pages/TrackOrderPage'
-// import { setSocket } from './redux/userSlice'
+// import TrackOrderPage from './pages/TrackOrderPage'
 
 // export const serverUrl = "http://localhost:8000"
 // function App() {
@@ -75,11 +75,9 @@
 // export default App
 
 
-import { useEffect } from 'react'
 import { Toaster } from 'react-hot-toast'
 import { useDispatch, useSelector } from 'react-redux'
 import { Navigate, Route, Routes } from 'react-router-dom'
-import { io } from 'socket.io-client'
 import ScrollToTop from './components/ScrollToTop'
 import useGetCity from './hooks/useGetCity'
 import useGetCurrentUser from './hooks/useGetCurrentUser'
@@ -101,7 +99,6 @@ import Shop from './pages/Shop'
 import SignIn from './pages/SignIn'
 import SignUp from './pages/SignUp'
 import TrackOrderPage from './pages/TrackOrderPage'
-import { setSocket } from './redux/userSlice'
 
 export const serverUrl = "http://localhost:8000"
 
@@ -116,18 +113,7 @@ function App() {
   useGetItemsByCity()
   useGetMyOrders()
 
-  useEffect(() => {
-    const socketInstance = io(serverUrl, { withCredentials: true })
-    dispatch(setSocket(socketInstance))
-    socketInstance.on('connect', () => {
-      if (userData) {
-        socketInstance.emit('identity', { userId: userData._id })
-      }
-    })
-    return () => {
-      socketInstance.disconnect()
-    }
-  }, [userData?._id])
+
 
   return (
     <>
@@ -163,7 +149,7 @@ function App() {
         <Route path='/signup' element={!userData ? <SignUp /> : <Navigate to={"/"} />} />
         <Route path='/signin' element={!userData ? <SignIn /> : <Navigate to={"/"} />} />
         <Route path='/forgot-password' element={!userData ? <ForgotPassword /> : <Navigate to={"/"} />} />
-        
+
         <Route path='/' element={userData ? <Home /> : <Navigate to={"/signin"} />} />
         <Route path='/create-edit-shop' element={userData ? <CreateEditShop /> : <Navigate to={"/signin"} />} />
         <Route path='/add-item' element={userData ? <AddItem /> : <Navigate to={"/signin"} />} />
