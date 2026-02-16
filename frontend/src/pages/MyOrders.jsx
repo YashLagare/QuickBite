@@ -1,175 +1,3 @@
-// import { useEffect, useState } from 'react';
-// import { IoIosArrowRoundBack } from "react-icons/io";
-// import { useDispatch, useSelector } from 'react-redux';
-// import { useNavigate } from 'react-router-dom';
-// import OwnerOrderCard from '../components/OwnerOrderCard';
-// import UserOrderCard from '../components/UserOrderCard';
-// import { setMyOrders, updateRealtimeOrderStatus } from '../redux/userSlice';
-
-// function MyOrders() {
-//   const { userData, myOrders, socket } = useSelector(state => state.user);
-//   const navigate = useNavigate();
-//   const dispatch = useDispatch();
-//   const [newOrderIds, setNewOrderIds] = useState([]);
-
-//   useEffect(() => {
-//     socket?.on('newOrder', (data) => {
-//       if (data.shopOrders?.owner._id == userData._id) {
-//         dispatch(setMyOrders([data, ...myOrders]));
-
-//         // Add new order ID to trigger highlight animation
-//         setNewOrderIds(prev => [...prev, data._id]);
-
-//         // Remove highlight after animation completes
-//         setTimeout(() => {
-//           setNewOrderIds(prev => prev.filter(id => id !== data._id));
-//         }, 3000);
-//       }
-//     });
-
-//     socket?.on('update-status', ({ orderId, shopId, status, userId }) => {
-//       if (userId == userData._id) {
-//         dispatch(updateRealtimeOrderStatus({ orderId, shopId, status }));
-//       }
-//     });
-
-//     return () => {
-//       socket?.off('newOrder');
-//       socket?.off('update-status');
-//     };
-//   }, [socket, myOrders, userData]);
-
-//   return (
-//     <div className='w-full min-h-screen bg-gradient-to-br from-[#fff7f3] via-[#fffdfb] to-[#ffece6] flex justify-center relative'>
-
-//       {/* Back Button */}
-//       <button
-//         className='absolute top-6 left-6 z-20 bg-white/80 backdrop-blur-sm p-2.5 rounded-full shadow-md hover:shadow-lg hover:-translate-y-[1px] transition-all duration-300 ease-out group'
-//         onClick={() => navigate("/")}
-//       >
-//         <IoIosArrowRoundBack
-//           size={28}
-//           className='text-orange-600 group-hover:text-orange-700 transition-colors'
-//         />
-//       </button>
-
-//       <div className='w-full max-w-4xl px-4 sm:px-6 py-8'>
-
-//         {/* Header Section */}
-//         <div className='bg-white/80 backdrop-blur-sm rounded-2xl shadow-sm p-4 sm:p-5 mb-8 border border-orange-50'>
-//           <div>
-//             <h1 className='text-2xl sm:text-3xl font-semibold text-[#2d2d2d]'>
-//               {userData.role === "owner" ? "Order Management" : "My Orders"}
-//             </h1>
-//             <p className='text-sm text-gray-500 mt-1'>
-//               {userData.role === "owner"
-//                 ? "Track and manage incoming orders"
-//                 : "View your order history and track deliveries"
-//               }
-//             </p>
-//           </div>
-//         </div>
-
-//         {/* Orders Container */}
-//         {myOrders && myOrders.length > 0 ? (
-//           <div className='space-y-6'>
-//             {myOrders?.map((order, index) => {
-//               const isNewOrder = newOrderIds.includes(order._id);
-
-//               return (
-//                 <div
-//                   key={index}
-//                   className={`
-//                     transition-all duration-500 ease-out
-//                     ${isNewOrder ? 'animate-highlight-pulse' : ''}
-//                   `}
-//                 >
-//                   {userData.role === "user" ? (
-//                     <UserOrderCard data={order} />
-//                   ) : userData.role === "owner" ? (
-//                     <OwnerOrderCard data={order} />
-//                   ) : null}
-//                 </div>
-//               );
-//             })}
-//           </div>
-//         ) : (
-//           // Empty State
-//           <div className='bg-white/60 backdrop-blur-sm rounded-2xl shadow-md p-12 sm:p-16 text-center border border-orange-50'>
-//             <div className='max-w-md mx-auto'>
-//               <div className='text-6xl mb-4'>
-//                 {userData.role === "owner" ? "📋" : "🛍️"}
-//               </div>
-//               <h3 className='text-2xl font-semibold text-[#2d2d2d] mb-3'>
-//                 No orders yet
-//               </h3>
-//               <p className='text-gray-500 text-base'>
-//                 {userData.role === "owner"
-//                   ? "Incoming orders will appear here. Make sure your restaurant is online and ready to accept orders."
-//                   : "Once you place an order, it will appear here. Start exploring restaurants and add items to your cart!"
-//                 }
-//               </p>
-
-//               {userData.role === "user" && (
-//                 <button
-//                   onClick={() => navigate("/")}
-//                   className='mt-6 bg-gradient-to-r from-orange-500 to-orange-600 text-white px-6 py-3 rounded-xl font-semibold shadow-md hover:shadow-lg hover:-translate-y-[1px] transition-all duration-300 ease-out'
-//                 >
-//                   Browse Restaurants
-//                 </button>
-//               )}
-//             </div>
-//           </div>
-//         )}
-//       </div>
-
-//       {/* Custom Keyframe Animation */}
-//       <style jsx>{`
-//         @keyframes highlight-pulse {
-//           0% {
-//             transform: scale(1);
-//             box-shadow: 0 0 0 0 rgba(255, 107, 74, 0.7);
-//           }
-//           50% {
-//             transform: scale(1.02);
-//             box-shadow: 0 0 0 10px rgba(255, 107, 74, 0);
-//           }
-//           100% {
-//             transform: scale(1);
-//             box-shadow: 0 0 0 0 rgba(255, 107, 74, 0);
-//           }
-//         }
-
-//         .animate-highlight-pulse {
-//           animation: highlight-pulse 1.5s ease-out;
-//           position: relative;
-//         }
-
-//         .animate-highlight-pulse::before {
-//           content: '';
-//           position: absolute;
-//           inset: -2px;
-//           background: linear-gradient(135deg, rgba(255, 107, 74, 0.3), rgba(255, 143, 107, 0.2));
-//           border-radius: 1rem;
-//           z-index: -1;
-//           animation: fade-out 3s ease-out forwards;
-//         }
-
-//         @keyframes fade-out {
-//           0% {
-//             opacity: 1;
-//           }
-//           100% {
-//             opacity: 0;
-//           }
-//         }
-//       `}</style>
-//     </div>
-//   );
-// }
-
-// export default MyOrders;
-
 import { useEffect, useState } from 'react';
 import { IoIosArrowRoundBack } from "react-icons/io";
 import { MdDeliveryDining, MdRestaurantMenu } from "react-icons/md";
@@ -177,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import OwnerOrderCard from '../components/OwnerOrderCard';
 import UserOrderCard from '../components/UserOrderCard';
+import useGetMyOrders from '../hooks/useGetMyOrders';
 import { setMyOrders, updateRealtimeOrderStatus } from '../redux/userSlice';
 
 function MyOrders() {
@@ -184,12 +13,12 @@ function MyOrders() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [newOrderIds, setNewOrderIds] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+  
+  // Fetch orders using the hook
+  const { loading: isLoading } = useGetMyOrders();
 
+  // Socket event listeners
   useEffect(() => {
-    // Simulate initial loading
-    const timer = setTimeout(() => setIsLoading(false), 500);
-
     socket?.on('newOrder', (data) => {
       if (data.shopOrders?.owner._id == userData._id) {
         dispatch(setMyOrders([data, ...myOrders]));
@@ -211,11 +40,10 @@ function MyOrders() {
     });
 
     return () => {
-      clearTimeout(timer);
       socket?.off('newOrder');
       socket?.off('update-status');
     };
-  }, [socket, myOrders, userData]);
+  }, [socket, myOrders, userData, dispatch]);
 
   return (
     <div className='w-full min-h-screen bg-gradient-to-br from-[#fff7f3] via-[#fffdfb] to-[#ffece6] flex justify-center relative'>
@@ -260,7 +88,7 @@ function MyOrders() {
             </div>
 
             {/* Order Count Badge */}
-            {myOrders && myOrders.length > 0 && (
+            {myOrders && myOrders.length > 0 && !isLoading && (
               <div className='bg-orange-100 text-orange-600 px-3 py-1.5 rounded-full text-sm font-semibold'>
                 {myOrders.length} {myOrders.length === 1 ? 'Order' : 'Orders'}
               </div>
