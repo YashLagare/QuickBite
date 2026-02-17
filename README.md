@@ -1,686 +1,1080 @@
-================================================================================
-                    QUICKBITE - FOOD DELIVERY APPLICATION
-                         PROJECT DOCUMENTATION
-================================================================================
+# ============================================================================
+# QUICKBITE - COMPREHENSIVE PROJECT DOCUMENTATION
+# ============================================================================
 
-================================================================================
-1. PROJECT OVERVIEW
-================================================================================
+## TABLE OF CONTENTS
 
-Project Name: QuickBite
+1. Project Overview
+2. Technology Stack
+3. Features List (FULL)
+4. Folder Structure Explanation
+5. System Architecture
+6. DFD (Data Flow Diagram) Explanation
+7. ERD (Entity Relationship Diagram) Explanation
+8. Security Architecture
+9. JWT Auth Flow (Diagram Explanation)
+10. Application Flow (Stepwise)
+11. Backend Internal Flow
+12. Frontend Internal Flow
+13. Auto API Documentation
+14. Dependencies Installation
+15. Environment Variables
+16. How To Run Project
+17. Runtime Flow (After Startup)
+18. Common Errors & Fixes
+19. Developer Notes
 
-Short Description:
-QuickBite is a full-stack food delivery application that connects customers, 
-restaurant owners, and delivery boys in a seamless platform. Users can browse 
-restaurants by city, add items to cart, place orders, and track deliveries in 
-real-time.
+---
 
-Main Purpose:
-To provide a complete food delivery solution with role-based access for:
-- Customers: Browse, order, and track food deliveries
-- Restaurant Owners: Manage their shop and orders
-- Delivery Boys: Accept and complete delivery assignments
+# ============================================================================
+# 1. PROJECT OVERVIEW
+# ============================================================================
 
-Tech Stack Used:
+## Project Name
+QuickBite
 
-Frontend:
-- React 19.2.4 (UI Library)
-- Vite 7.1.2 (Build Tool)
-- Redux Toolkit 2.8.2 (State Management)
-- Redux Persist 6.0.0 (State Persistence)
-- React Router DOM 7.8.1 (Routing)
-- Firebase 12.1.0 (Authentication)
-- Socket.io Client 4.8.1 (Real-time Communication)
-- Leaflet 1.9.4 (Maps)
-- React Leaflet 5.0.0 (React Map Components)
-- Tailwind CSS 4.1.12 (Styling)
-- Axios 1.11.0 (HTTP Client)
-- React Hot Toast 2.6.0 (Notifications)
-- Recharts 3.2.0 (Charts/Analytics)
+## Purpose
+A full-stack food ordering and delivery platform connecting customers with local shops and delivery personnel. It enables users to browse menus, place orders, make payments, and track deliveries in real-time. It also provides tools for shop owners to manage their inventory and for delivery boys to accept and fulfill orders.
 
-Backend:
-- Node.js (Runtime)
-- Express 5.1.0 (Web Framework)
-- MongoDB with Mongoose 8.17.2 (Database)
-- Socket.io 4.8.1 (Real-time Communication)
-- JWT 9.0.2 (Authentication)
-- Bcryptjs 3.0.2 (Password Hashing)
-- Nodemailer 7.0.5 (Email Service)
-- Cloudinary 2.7.0 (Image Storage)
-- Multer 2.0.2 (File Upload)
-- Razorpay 2.9.6 (Payment Gateway)
-- Cookie Parser 1.4.7 (Cookie Handling)
-- CORS 2.8.5 (Cross-Origin Resource Sharing)
-- Dotenv 17.2.1 (Environment Variables)
+## High-Level System Summary
+This is a MERN (MongoDB, Express, React, Node.js) application featuring:
+- Role-based authentication (User, Shop Owner, Delivery Boy).
+- Real-time communication using Socket.io (Order updates, Delivery tracking).
+- Secure payments via Razorpay.
+- Media management with Cloudinary.
+- State management with Redux Toolkit & Persistence.
+- Geolocation services for address and delivery tracking.
 
-================================================================================
-2. FEATURES LIST
-================================================================================
+## Business Problem Solved
+- Streamlines the entire food ordering process from selection to delivery.
+- Provides a platform for small business owners to manage their digital presence.
+- create a delivery network with real-time assignment broadcasting.
 
-User Features:
---------------
-- User Registration (Email/Password + Firebase Auth)
-- User Login with Google Authentication
-- JWT-based Authentication with Cookie Storage
-- Forgot Password with OTP Verification
-- Browse Shops by City
-- Browse Food Items by Category
-- Search Items Across Shops
-- Add Items to Cart with Quantity Management
-- Cart Management (Add, Update, Remove items)
-- Place Order (COD and Online Payment)
-- Order History / My Orders
-- Real-time Order Tracking
-- Location-based Services
+---
 
-Owner Features:
----------------
-- Create/Edit Shop Profile
-- Add Food Items with Image Upload
-- Edit Existing Food Items
-- Delete Food Items
-- View Incoming Orders
-- Update Order Status (Pending → Preparing → Out for Delivery)
-- View Order Analytics/Dashboard
-- Category Management
+# 2. TECHNOLOGY STACK
+# ============================================================================
 
-Delivery Boy Features:
-----------------------
-- View Delivery Assignments
-- Accept Delivery Requests
-- Real-time Location Tracking
-- OTP Verification for Delivery Confirmation
-- Update Delivery Status
-- View Today's Deliveries
+## Frontend
 
-System Features:
-----------------
-- Real-time Order Status Updates (Socket.io)
-- Live Delivery Tracking
-- Multi-vendor Order Support (Order from multiple shops at once)
-- Payment Integration (Razorpay)
-- Image Upload (Cloudinary)
-- Email Notifications
-- Geolocation-based Shop/Item Filtering
+| Category | Technology |
+|----------|------------|
+| Framework | React 19 |
+| Language | JavaScript (ES6+) |
+| State Management | Redux Toolkit (with Redux Persist) |
+| Routing | React Router DOM v7 |
+| UI Framework | Tailwind CSS v4 |
+| HTTP Client | Axios |
+| Real-time | Socket.io Client |
+| Notifications | React Hot Toast |
+| Deployment/Build | Vite |
 
-================================================================================
-3. FOLDER STRUCTURE (HIGH-LEVEL)
-================================================================================
+### Frontend Dependencies
+```json
+{
+  "@reduxjs/toolkit": "^2.8.2",
+  "@tailwindcss/vite": "^4.1.12",
+  "axios": "^1.11.0",
+  "firebase": "^12.1.0",
+  "leaflet": "^1.9.4",
+  "lucide-react": "^0.564.0",
+  "react": "19.2.4",
+  "react-dom": "19.2.4",
+  "react-hot-toast": "^2.6.0",
+  "react-icons": "^5.5.0",
+  "react-leaflet": "^5.0.0",
+  "react-redux": "^9.2.0",
+  "react-router-dom": "^7.8.1",
+  "react-spinners": "^0.17.0",
+  "recharts": "^3.2.0",
+  "redux-persist": "^6.0.0",
+  "socket.io-client": "^4.8.1",
+  "tailwindcss": "^4.1.12"
+}
+```
 
-Backend Structure:
-------------------
+## Backend
+
+| Category | Technology |
+|----------|------------|
+| Runtime | Node.js |
+| Framework | Express.js v5 |
+| Database | MongoDB (Mongoose ODM) |
+| Authentication | JWT (JSON Web Tokens) |
+| Payment Gateway | Razorpay |
+| Image Storage | Cloudinary (via Multer) |
+| Real-time | Socket.io |
+| Security | BcryptJS, Cookie Parser, CORS |
+
+### Backend Dependencies
+```json
+{
+  "bcryptjs": "^3.0.2",
+  "cloudinary": "^2.7.0",
+  "cookie-parser": "^1.4.7",
+  "cors": "^2.8.5",
+  "dotenv": "^17.2.1",
+  "express": "^5.1.0",
+  "jsonwebtoken": "^9.0.2",
+  "mongoose": "^8.17.2",
+  "multer": "^2.0.2",
+  "nodemailer": "^7.0.5",
+  "nodemon": "^3.1.10",
+  "razorpay": "^2.9.6",
+  "socket.io": "^4.8.1"
+}
+```
+
+---
+
+# 3. FEATURES LIST (FULL)
+# ============================================================================
+
+## Authentication & User Management
+- [x] Sign up/Sign in with Email & Password
+- [x] Google Authentication
+- [x] OTP Verification for account activation
+- [x] Password Reset via OTP
+- [x] Role-based access (User, Owner, DeliveryBoy)
+- [x] Location management (City/State/Address detection)
+
+## Shop Management (Owner)
+- [x] Create and Edit Shop profile
+- [x] Upload Shop images
+- [x] Manage Shop items (Add, Edit, Delete)
+- [x] View Shop Orders
+
+## Food & Items
+- [x] Browse items by Category (Snacks, Main Course, etc.)
+- [x] Search items
+- [x] View items by City or Specific Shop
+- [x] Item Rating system
+
+## Order & Cart
+- [x] Add/Remove items to/from Cart
+- [x] Update item quantities
+- [x] Real-time total calculation
+- [x] Place Order (Cash on Delivery or Online)
+- [x] Online Payment integration with Razorpay
+
+## Delivery System
+- [x] Real-time Order Broadcasting to nearby Delivery Boys
+- [x] Delivery Assignment acceptance
+- [x] Delivery OTP verification
+- [x] Real-time Order Status tracking (Pending -> Preparing -> Out for Delivery -> Delivered)
+
+---
+
+# 4. FOLDER STRUCTURE EXPLANATION
+# ============================================================================
+
+## Backend Structure
+
+```
 backend/
-├── index.js                 # Main server entry point
-├── socket.js                # Socket.io handlers for real-time features
 ├── config/
-│   └── db.js                # MongoDB connection configuration
-├── controllers/             # Request handlers for all routes
-│   ├── auth.controllers.js
-│   ├── user.controllers.js
-│   ├── shop.controllers.js
-│   ├── item.controllers.js
-│   └── order.controllers.js
-├── models/                  # MongoDB/Mongoose schemas
-│   ├── user.model.js
-│   ├── shop.model.js
-│   ├── item.model.js
-│   ├── order.model.js
-│   └── deliveryAssignment.model.js
-├── routes/                  # API route definitions
-│   ├── auth.routes.js
-│   ├── user.routes.js
-│   ├── shop.routes.js
-│   ├── item.routes.js
-│   └── order.routes.js
-├── middlewares/             # Express middleware functions
-│   ├── isAuth.js            # JWT authentication verification
-│   └── multer.js            # File upload configuration
-├── utils/                   # Utility functions
-│   ├── token.js             # JWT token generation
-│   ├── mail.js              # Nodemailer email sending
-│   └── cloudinary.js        # Cloudinary configuration
-└── public/                  # Static files (uploaded images)
-
-Frontend Structure:
--------------------
-frontend/
-├── src/
-│   ├── main.jsx             # React entry point
-│   ├── App.jsx              # Main App component with routing
-│   ├── index.css            # Global styles (Tailwind)
-│   ├── category.js          # Category definitions
-│   ├── firebase.js          # Firebase configuration
-│   ├── components/         # Reusable React components
-│   │   ├── Nav.jsx
-│   │   ├── FoodCard.jsx
-│   │   ├── CartItemCard.jsx
-│   │   ├── CategoryCard.jsx
-│   │   ├── UserDashboard.jsx
-│   │   ├── OwnerDashboard.jsx
-│   │   ├── DeliveryBoy.jsx
-│   │   ├── OwnerItemCard.jsx
-│   │   ├── OwnerOrderCard.jsx
-│   │   ├── UserOrderCard.jsx
-│   │   ├── DeliveryBoyTracking.jsx
-│   │   └── ScrollToTop.jsx
-│   ├── pages/               # Page components
-│   │   ├── Home.jsx
-│   │   ├── SignIn.jsx
-│   │   ├── SignUp.jsx
-│   │   ├── ForgotPassword.jsx
-│   │   ├── Shop.jsx
-│   │   ├── CartPage.jsx
-│   │   ├── CheckOut.jsx
-│   │   ├── OrderPlaced.jsx
-│   │   ├── MyOrders.jsx
-│   │   ├── TrackOrderPage.jsx
-│   │   ├── AddItem.jsx
-│   │   ├── EditItem.jsx
-│   │   └── CreateEditShop.jsx
-│   ├── redux/               # Redux state management
-│   │   ├── store.js         # Redux store configuration
-│   │   ├── userSlice.js     # User state (cart, orders, etc.)
-│   │   ├── ownerSlice.js    # Owner-specific state
-│   │   └── mapSlice.js      # Map/location state
-│   ├── hooks/               # Custom React hooks
-│   │   ├── useGetCurrentUser.jsx
-│   │   ├── useGetCity.jsx
-│   │   ├── useGetItemsByCity.jsx
-│   │   ├── useGetMyOrders.jsx
-│   │   ├── useGetMyshop.jsx
-│   │   ├── useGetShopByCity.jsx
-│   │   └── useUpdateLocation.jsx
-│   ├── context/              # React context providers
-│   │   └── SocketContext.jsx
-│   └── assets/              # Static assets (images, icons)
-├── public/                  # Public static files
-├── package.json             # Frontend dependencies
-├── vite.config.js           # Vite configuration
-└── index.html               # HTML entry point
-
-================================================================================
-4. APPLICATION FLOW (STEPWISE)
-================================================================================
-
-Complete Application Flow:
----------------------------
-
-Step 1: User Opens Application
-   - Frontend loads at http://localhost:5173
-   - App checks for persisted user state in localStorage
-   - If no user data, redirects to SignIn page
-
-Step 2: User Registration/Login
-   - User can sign up with email/password OR Google Auth
-   - Firebase handles authentication on frontend
-   - After Firebase auth, frontend calls backend API to create JWT token
-   - JWT token is stored in cookies (httpOnly)
-   - User data is stored in Redux store and persisted
-
-Step 3: Home Page Dashboard (Role-based)
-   - Based on user role (user/owner/deliveryBoy), appropriate dashboard loads:
-     * User → UserDashboard
-     * Owner → OwnerDashboard
-     * Delivery Boy → DeliveryBoy
-
-Step 4: Location Setup
-   - App requests user location (latitude/longitude)
-   - User selects their city and state
-   - Location is stored in Redux and sent to backend
-
-Step 5: Browsing Shops/Items
-   - Backend returns shops and items based on user's city
-   - User can browse shops, view shop details, and view items
-   - User can search for specific items
-
-Step 6: Adding to Cart
-   - User clicks "Add" on food items
-   - Item is added to Redux cart state (persisted in localStorage)
-   - Cart icon shows item count and total amount
-
-Step 7: Cart Management
-   - User can view cart at /cart route
-   - Can update quantities or remove items
-   - Total amount is calculated in real-time
-
-Step 8: Placing Order
-   - User proceeds to checkout
-   - Selects payment method (COD or Online)
-   - If online, Razorpay payment integration
-   - Order is created in database with pending status
-
-Step 9: Order Processing (Real-time)
-   - Shop owners receive order notification (via dashboard)
-   - Owner updates status: pending → preparing → out for delivery
-   - Status updates are pushed to user via Socket.io
-   - User can track order status in real-time
-
-Step 10: Delivery Process
-   - Delivery boy accepts assignment
-   - Delivery boy updates location (real-time via Socket.io)
-   - User can see delivery boy location on map
-   - Delivery boy enters OTP to confirm delivery
-   - Order marked as delivered
-
-================================================================================
-5. BACKEND FLOW
-================================================================================
-
-Server Startup:
----------------
-1. index.js is executed (via nodemon in dev mode)
-2. Express app is created
-3. HTTP server is created
-4. Socket.io server is initialized with CORS settings
-5. Middleware is configured (CORS, JSON, cookie-parser)
-6. Routes are mounted:
-   - /api/auth - Authentication routes
-   - /api/user - User management routes
-   - /api/shop - Shop management routes
-   - /api/item - Item management routes
-   - /api/order - Order management routes
-7. Socket handler is attached
-8. Server starts listening on PORT (default 5000)
-9. Database connection is established
-
-Database Connection:
---------------------
-- connectDb() function connects to MongoDB using MONGODB_URL
-- Connection is established when server starts
-
-Routes → Controllers → Models Flow:
-----------------------------------
-Example: Creating a Shop
-1. POST /api/shop/create-edit is called
-2. Middleware: isAuth - verifies JWT token from cookie
-3. Middleware: multer - handles image upload to ./public folder
-4. Controller: createEditShop
-   - Receives request with shop data and image
-   - Uploads image to Cloudinary
-   - Creates/updates Shop model in database
-   - Returns response
-5. Model: Shop - Mongoose schema defines data structure
-
-Authentication Logic:
----------------------
-- JWT token is generated on successful login/signup
-- Token contains userId and expires in 7 days
-- Token is stored in httpOnly cookie
-- isAuth middleware verifies token on protected routes
-- User ID is extracted from decoded token for operations
-
-Error Handling Approach:
------------------------
-- All routes use try-catch blocks
-- Errors return appropriate HTTP status codes (400, 401, 500)
-- Error messages are sent as JSON responses
-
-================================================================================
-6. FRONTEND FLOW
-================================================================================
-
-App Entry Point:
-----------------
-1. main.jsx renders App component
-2. Providers are set up:
-   - BrowserRouter - for routing
-   - Provider - Redux store
-   - PersistGate - for state persistence
-   - SocketProvider - for real-time communication
-
-Routing Structure (App.jsx):
-----------------------------
-- Public Routes (accessible without login):
-  * /signup
-  * /signin
-  * /forgot-password
-
-- Protected Routes (require login):
-  * / - Home (role-based dashboard)
-  * /create-edit-shop - Create/edit shop (owner only)
-  * /add-item - Add item (owner only)
-  * /edit-item/:itemId - Edit item (owner only)
-  * /cart - Shopping cart
-  * /checkout - Checkout page
-  * /order-placed - Order success page
-  * /my-orders - Order history
-  * /track-order/:orderId - Track order
-  * /shop/:shopId - View shop
-
-State Management Flow:
---------------------
-Redux Store Structure:
-- user slice:
-  * userData - Current user information
-  * currentCity, currentState, currentAddress - Location
-  * shopInMyCity, itemsInMyCity - Location-based data
-  * cartItems, totalAmount - Shopping cart (persisted)
-  * myOrders - User's order history
-  * searchItems - Search results
-- owner slice: Owner-specific state
-- map slice: Map/location state
-
-API Integration:
----------------
-- All API calls use Axios
-- Base URL: http://localhost:8000 (serverUrl in App.jsx)
-- JWT token is automatically sent via cookies
-
-Component Interaction:
----------------------
-1. Custom hooks fetch data on component mount
-2. Data is stored in Redux
-3. Components subscribe to Redux state
-4. UI updates automatically when state changes
-5. Socket.io updates state in real-time
-
-================================================================================
-7. DEPENDENCIES INSTALLATION
-================================================================================
-
-Backend Dependencies:
---------------------
-Step 1: Navigate to backend directory
-   cd backend
-
-Step 2: Install all dependencies
-   npm install
-
-Important Backend Packages:
-- express: ^5.1.0 - Web framework
-- mongoose: ^8.17.2 - MongoDB ODM
-- jsonwebtoken: ^9.0.2 - JWT authentication
-- bcryptjs: ^3.0.2 - Password hashing
-- cookie-parser: ^1.4.7 - Cookie parsing
-- cors: ^2.8.5 - Cross-origin resource sharing
-- dotenv: ^17.2.1 - Environment variables
-- socket.io: ^4.8.1 - Real-time communication
-- nodemailer: ^7.0.5 - Email sending
-- cloudinary: ^2.7.0 - Image cloud storage
-- multer: ^2.0.2 - File upload
-- razorpay: ^2.9.6 - Payment gateway
-- nodemon: ^3.1.10 - Development server auto-reload
-
-Frontend Dependencies:
---------------------
-Step 1: Navigate to frontend directory
-   cd frontend
-
-Step 2: Install all dependencies
-   npm install
-
-Important Frontend Packages:
-- react: ^19.2.4 - UI library
-- react-dom: ^19.2.4 - React DOM
-- react-router-dom: ^7.8.1 - Routing
-- @reduxjs/toolkit: ^2.8.2 - Redux toolkit
-- react-redux: ^9.2.0 - React Redux bindings
-- redux-persist: ^6.0.0 - Redux persistence
-- firebase: ^12.1.0 - Firebase authentication
-- socket.io-client: ^4.8.1 - Socket.io client
-- axios: ^1.11.0 - HTTP client
-- leaflet: ^1.9.4 - Maps
-- react-leaflet: ^5.0.0 - React map components
-- tailwindcss: ^4.1.12 - CSS framework
-- react-hot-toast: ^2.6.0 - Notifications
-- recharts: ^3.2.0 - Charts
-- lucide-react: ^0.564.0 - Icons
-
-================================================================================
-8. ENVIRONMENT VARIABLES SETUP
-================================================================================
-
-Backend Environment Variables (.env):
-------------------------------------
-Create a .env file in the backend directory with the following variables:
-
-# Server Configuration
-PORT=5000                          # Server port number
-
-# Database Configuration
-MONGODB_URL=your_mongodb_connection_string   # MongoDB Atlas URI
-
-# JWT Configuration
-JWT_SECRET=your_jwt_secret_key    # Secret key for JWT token signing
-
-# Email Configuration (Nodemailer)
-EMAIL=your_email@gmail.com        # Email address for sending emails
-PASS=your_email_app_password      # App password for email
-
-# Cloudinary Configuration
-CLOUDINARY_CLOUD_NAME=your_cloud_name       # Cloudinary cloud name
-CLOUDINARY_API_KEY=your_api_key             # Cloudinary API key
-CLOUDINARY_API_SECRET=your_api_secret       # Cloudinary API secret
-
-# Razorpay Payment Configuration
-RAZORPAY_KEY_ID=your_razorpay_key_id        # Razorpay key ID
-RAZORPAY_KEY_SECRET=your_razorpay_key_secret # Razorpay key secret
-
-Frontend Environment Variables:
-------------------------------
-Create a .env file in the frontend directory (or use existing):
-
-VITE_FIREBASE_APIKEY=your_firebase_api_key
-# Note: Other Firebase config values are hardcoded in firebase.js
-
-Server URL (for API calls):
---------------------------
-The frontend expects the backend to run at: http://localhost:8000
-(This is defined as serverUrl in App.jsx)
-
-================================================================================
-9. HOW TO RUN PROJECT (STEPWISE)
-================================================================================
-
-Start Backend:
---------------
-Step 1: Open a terminal and navigate to backend directory
-   cd backend
-
-Step 2: Install dependencies (if not already installed)
-   npm install
-
-Step 3: Create .env file with all required environment variables
-   (See Section 8 for all required variables)
-
-Step 4: Start the backend server
-   npm run dev
-
-   Expected output:
-   - Server starts at port 5000
-   - "db connected" message appears (MongoDB connection successful)
-
-Start Frontend:
----------------
-Step 1: Open a new terminal and navigate to frontend directory
-   cd frontend
-
-Step 2: Install dependencies (if not already installed)
-   npm install
-
-Step 3: Create .env file with Firebase API key
-   VITE_FIREBASE_APIKEY=your_firebase_api_key
-
-Step 4: Start the frontend development server
-   npm run dev
-
-   Expected output:
-   - Frontend starts at http://localhost:5173
-   - Vite server is running with hot module replacement
-
-Access the Application:
------------------------
-1. Open your browser and go to http://localhost:5173
-2. You will be redirected to the Sign In page
-3. Sign up for a new account or sign in with Google
-
-================================================================================
-10. FULL EXECUTION FLOW (BEGINNER FRIENDLY)
-================================================================================
-
-What Happens After Running Both Servers:
-----------------------------------------
-
-Step 1: Backend Initialization (Port 5000)
------------------------------------------
-- Express server starts
-- MongoDB database connects
-- Socket.io server initializes
-- All API routes become available
-- Server listens for incoming requests
-
-Step 2: Frontend Initialization (Port 5173)
-------------------------------------------
-- React app loads in browser
-- Redux store initializes with persisted state
-- Socket.io client connects to backend
-- Custom hooks fetch initial data
-- Navigation renders appropriate components
-
-Step 3: User Authentication Flow
----------------------------------
-1. User visits http://localhost:5173
-2. App checks for existing user session
-3. If not logged in, redirects to /signin
-4. User clicks "Sign Up" or "Sign In with Google"
-5. Firebase handles authentication
-6. Frontend calls /api/auth/signin or /api/auth/google-auth
-7. Backend creates JWT token and sends in cookie
-8. User data is stored in Redux
-9. User is redirected to Home (/)
-
-Step 4: Shopping Flow
----------------------
-1. User selects their city on first login
-2. Backend returns shops and items in that city
-3. User browses shops and items on dashboard
-4. User clicks on a shop to view items
-5. User adds items to cart
-6. Cart state is persisted to localStorage
-
-Step 5: Checkout and Payment
-----------------------------
-1. User goes to /cart to review items
-2. User clicks "Checkout"
-3. User enters delivery address
-4. User selects payment method:
-   - COD: Order placed directly
-   - Online: Razorpay payment integration
-5. Payment verification happens
-6. Order is created in database
-7. User is redirected to /order-placed
-
-Step 6: Order Processing
------------------------
-1. Order appears in owner's dashboard
-2. Owner changes status: pending → preparing
-3. Status update is pushed to user via Socket.io
-4. User sees real-time status change on My Orders page
-
-Step 7: Delivery Flow
----------------------
-1. Delivery boy sees assignment in dashboard
-2. Delivery boy accepts the delivery
-3. Delivery boy's location is tracked via Socket.io
-4. User can see delivery boy location on map
-5. Delivery boy reaches destination
-6. Delivery boy enters OTP to confirm
-7. Order is marked as delivered
-
-Authentication Lifecycle:
-------------------------
-1. User signs up/signs in → JWT token generated (7 days validity)
-2. Token stored in httpOnly cookie
-3. Every protected request includes cookie automatically
-4. isAuth middleware verifies token on each request
-5. Token expires → user redirected to sign in
-6. User can sign out → cookie is cleared
-
-API Request Flow:
-------------------
-1. Frontend makes request to http://localhost:8000/api/...
-2. Request includes cookie with JWT token
-3. Backend middleware (isAuth) verifies token
-4. Controller processes request
-5. Model interacts with MongoDB
-6. Response is sent back to frontend
-7. Redux state is updated
-8. UI re-renders with new data
-
-Data Flow Between Frontend and Backend:
----------------------------------------
-- REST API: Standard HTTP requests (GET, POST, PUT, DELETE)
-- WebSocket: Real-time updates via Socket.io
-- Cookies: JWT token for authentication
-- JSON: Data format for requests and responses
-
-================================================================================
-11. COMMON ERRORS & FIXES
-================================================================================
-
-Backend Errors:
----------------
-
-Error: "token not found"
-Fix: Ensure the frontend is sending cookies. Check if credentials: true is set in CORS and Axios.
-
-Error: "db connected" not showing
-Fix: Check MongoDB URL in .env file. Ensure MongoDB Atlas is accessible and IP whitelist includes your IP.
-
-Error: "Cannot read properties of undefined"
-Fix: Check if all required fields are being sent in the request body. Verify the model schema.
-
-Error: Cloudinary upload fails
-Fix: Verify CLOUDINARY_CLOUD_NAME, API_KEY, and API_SECRET are correct in .env.
-
-Error: Nodemailer authentication fails
-Fix: Use an App Password for Gmail. Enable 2-Factor Authentication and generate an App Password.
-
-Error: Socket.io connection refused
-Fix: Ensure the backend server is running. Check if port 5000 is not blocked by firewall.
-
-Frontend Errors:
-----------------
-
-Error: "Firebase: Auth token expired"
-Fix: Clear localStorage and re-authenticate. Check token expiration settings in backend.
-
-Error: Redux state not persisting
-Fix: Check if redux-persist is configured correctly. Ensure storage is available in the browser.
-
-Error: Cart items disappear on refresh
-Fix: The cart is persisted via redux-persist. Check if the whitelist config includes cartItems.
-
-Error: Map not loading (Leaflet)
-Fix: Ensure leaflet CSS is imported. Check if the map container has explicit height.
-
-Error: CORS error in browser console
-Fix: Ensure backend CORS origin matches frontend URL exactly (http://localhost:5173).
-
-Error: Images not loading
-Fix: Check if the /public folder exists in backend. Verify the image path is correct.
-
-Error: Payment failure (Razorpay)
-Fix: Verify RAZORPAY_KEY_ID and KEY_SECRET are correct. Check if order ID matches.
-
-General Debugging Tips:
------------------------
-1. Check browser console for JavaScript errors
-2. Check backend terminal for server-side errors
-3. Use React DevTools to inspect Redux state
-4. Use Network tab to inspect API requests/responses
-5. Verify all environment variables are set correctly
-6. Ensure both servers are running on correct ports
-7. Restart servers after making configuration changes
-
-================================================================================
-                              END OF DOCUMENTATION
-================================================================================
-
-This documentation was generated for QuickBite - Food Delivery Application
-Version: 1.0.0
-Last Updated: 2026
-
-For additional help or questions, please refer to the source code or contact
-the development team.
-================================================================================
+│   └── db.js                 # MongoDB connection logic (Mongoose.connect)
+├── controllers/
+│   ├── auth.controllers.js   # Auth (Signup, Signin, OTP, GoogleAuth) logic
+│   ├── item.controllers.js   # Item CRUD (Add, Edit, Delete, Get) operations
+│   ├── order.controllers.js  # Order placement, Payment verify, Delivery assignment
+│   ├── shop.controllers.js   # Shop CRUD and Search logic
+│   └── user.controllers.js   # User profile fetch & location update
+├── middlewares/
+│   ├── isAuth.js             # JWT verification middleware (Extracts userId from cookie)
+│   └── multer.js             # Image upload configuration (DiskStorage/Cloudinary)
+├── models/
+│   ├── user.model.js         # User schema (roles: user/owner/admin, location: 2dsphere)
+│   ├── shop.model.js         # Shop schema (owner ref, items array, address)
+│   ├── item.model.js         # Item schema (price, category, rating)
+│   ├── order.model.js        # Order schema (payment info, status, shopOrders)
+│   └── deliveryAssignment.model.js # Delivery task schema (status: assigned/completed)
+├── routes/
+│   ├── auth.routes.js        # Auth API endpoints
+│   ├── item.routes.js        # Item API endpoints
+│   ├── order.routes.js       # Order API endpoints
+│   ├── shop.routes.js        # Shop API endpoints
+│   └── user.routes.js        # User API endpoints
+├── utils/
+│   ├── mail.js               # Email sending utility (Nodemailer)
+│   └── token.js              # JWT generation utility
+├── index.js                  # App entry point (Express app, Routes, CORS, Socket.io)
+└── socket.js                 # Socket.io event listners (Order updates, Broadcasting)
+```
+
+## Frontend Structure
+
+```
+frontend/src/
+├── components/               # Reusable UI components
+│   ├── Navbar.jsx            # Top navigation bar
+│   ├── Footer.jsx            # Application footer
+│   ├── ItemCard.jsx          # Display card for food items
+│   └── ...
+├── context/                  # Context providers (if any)
+├── hooks/                    # Custom React hooks
+│   ├── useGetCity.jsx        # Hook to fetch user city from coords
+│   └── useGetCurrentUser.jsx # Hook to fetch session data
+├── pages/                    # Main route pages
+│   ├── Home.jsx              # Landing page with categories & shops
+│   ├── CartPage.jsx          # Shopping cart & checkout summary
+│   ├── CheckOut.jsx          # Payment page (Razorpay integration)
+│   ├── TrackOrderPage.jsx    # Live order tracking map
+│   ├── Shop.jsx              # Shop details and menu
+│   ├── SignIn.jsx            # Login page
+│   ├── SignUp.jsx            # Registration page
+│   └── Profile.jsx           # User profile settings
+├── redux/                    # Redux State Management
+│   ├── store.js              # Store configuration (Redux Persist)
+│   ├── userSlice.js          # User auth, Cart, & Order history state
+│   ├── mapSlice.js           # User Location (Lat/Long) state
+│   └── ownerSlice.js         # Shop Owner specific state
+├── App.jsx                   # Main Routing configuration (Routes, Route, ProtectedRoute)
+└── main.jsx                  # React entry point, Providers wrapping
+```
+
+---
+
+# 5. SYSTEM ARCHITECTURE
+# ============================================================================
+
+## Client-Server Architecture
+
+```
+┌─────────────────────────────────────────────────────────────────────────┐
+│                           CLIENT (FRONTEND)                             │
+│  ┌─────────────────────────────────────────────────────────────────┐   │
+│  │  React Application (Vite)                                       │   │
+│  │  ├── Redux Stores (State Management)                            │   │
+│  │  ├── React Router (Navigation)                                  │   │
+│  │  ├── Components & Pages                                         │   │
+│  │  └── Axios (HTTP Client)                                        │   │
+│  └─────────────────────────────────────────────────────────────────┘   │
+└────────────────────────────────┬────────────────────────────────────────┘
+                                 │
+                                 ▼
+┌─────────────────────────────────────────────────────────────────────────┐
+│                           SERVER (BACKEND)                              │
+│  ┌─────────────────────────────────────────────────────────────────┐   │
+│  │  Express.js Server                                              │   │
+│  │  ├── Routes (API Endpoints)                                     │   │
+│  │  ├── Middleware (Auth, Security)                                │   │
+│  │  └── Controllers (Business Logic)                               │   │
+│  └─────────────────────────────────────────────────────────────────┘   │
+└────────────────────────────────┬────────────────────────────────────────┘
+                                 │
+         ┌───────────────────────┼───────────────────────┐
+         │                       │                       │
+         ▼                       ▼                       ▼
+┌─────────────────┐   ┌─────────────────┐   ┌─────────────────┐
+│   MongoDB       │   │   Socket.io     │   │   Cloudinary    │
+│   (Database)    │   │   (Real-time)   │   │   (Images)      │
+└─────────────────┘   └─────────────────┘   └─────────────────┘
+```
+
+## Data Communication Model
+1.  **REST API**: Used for standard CRUD operations (User auth, fetching products, placing orders).
+2.  **Socket.io**: Used for bidirectional real-time events (Order status updates, Delivery requests).
+3.  **Redux Persist**: Caches user session and cart data in LocalStorage to persist across refreshes.
+
+---
+
+# 6. DFD (DATA FLOW DIAGRAM) EXPLANATION
+# ============================================================================
+
+## Level 0 - Context Diagram
+
+```
+                    ┌─────────────────┐
+                    │                 │
+    ┌───────────────┤   USER         ├───────────────┐
+    │               │                 │               │
+    │               └─────────────────┘               │
+    │                       │                         │
+    │                       ▼                         │
+    │               ┌─────────────────┐              │
+    │               │                 │              │
+    │   ┌──────────►│  QUICKBITE     │◄──────────┐   │
+    │   │           │    SYSTEM      │           │   │
+    │   │           │                 │           │   │
+    │   │           └─────────────────┘           │   │
+    │   │                   │                     │   │
+    │   │                   ▼                     │   │
+    │   │           ┌─────────────────┐           │   │
+    │   │           │                 │           │   │
+    │   └───────────│   DATABASE     │◄──────────┘   │
+    │               │   (MongoDB)    │               │
+    │               └─────────────────┘               │
+    │                       │                         │
+    │                       │                         │
+    └───────────────────────┴─────────────────────────┘
+```
+
+## Level 1 - Order Process
+
+1.  **User** adds items to Cart → Redux Store updates.
+2.  **User** initiates Checkout → API `/place-order`.
+3.  **System** creates Order Record → Status: "Pending".
+4.  **System** (if Online Payment) → Initiates Razorpay Order.
+5.  **User** completes Payment → API `/verify-payment`.
+6.  **System** Broadcasts local order via Socket.io.
+7.  **Delivery Boy** accepts order → Assignment Created.
+8.  **Shop Owner** sees new order → Prepares food.
+
+---
+
+# 7. ERD (ENTITY RELATIONSHIP DIAGRAM) EXPLANATION
+# ============================================================================
+
+## Entities
+
+### 1. User Entity
+| Field | Type | Description |
+|-------|------|-------------|
+| _id | ObjectId | Unique identifier |
+| fullName | String | User's full name |
+| email | String | User's email (unique) |
+| role | Enum | "user", "owner", "deliveryBoy" |
+| location | GeoJSON | Point coordinates (lat/lng) |
+
+### 2. Shop Entity
+| Field | Type | Description |
+|-------|------|-------------|
+| _id | ObjectId | Unique identifier |
+| name | String | Shop Name |
+| owner | ObjectId | Reference to User |
+| items | Array | Reference to Items |
+| city | String | Shop City |
+
+### 3. Order Entity
+| Field | Type | Description |
+|-------|------|-------------|
+| _id | ObjectId | Unique identifier |
+| user | ObjectId | Reference to User |
+| shopOrders | Array | Embedded shop sub-orders |
+| status | String | Order status |
+| totalAmount | Number | Total cost |
+
+---
+
+# 8. SECURITY ARCHITECTURE
+# ============================================================================
+
+## Authentication Mechanism
+
+The application uses **JWT (JSON Web Token)** based authentication.
+
+### Token Strategy
+- **Token**: Signed including `userId`.
+- **Storage**: HTTP-only Cookie `token`.
+- **Expiration**: 7 days.
+
+## Authorization Middleware
+
+```javascript
+// backend/middlewares/isAuth.js
+
+const isAuth = async (req, res, next) => {
+    try {
+        const token = req.cookies.token
+        if (!token) return res.status(400).json({message: "token not found"})
+        
+        const decodeToken = jwt.verify(token, process.env.JWT_SECRET)
+        if (!decodeToken) return res.status(400).json({message: "token not verify"})
+            
+        req.userId = decodeToken.userId
+        next()
+    } catch (error) {
+         return res.status(500).json({message: "isAuth error"})
+    }
+}
+```
+
+## Security Measures
+1.  **BcryptJS**: Hashing passwords before storage.
+2.  **CORS**: Restricted to frontend origin with credentials.
+3.  **Cookies**: `httpOnly`, `sameSite: "strict"`.
+
+---
+
+# 9. JWT AUTH FLOW (DIAGRAM EXPLANATION)
+# ============================================================================
+
+## Step-by-Step Authentication Flow
+
+```
+┌─────────┐     ┌──────────────┐     ┌─────────────┐     ┌──────────┐
+│  USER   │────►│  LOGIN API   │────►│    USER     │────►│  GENERATE│
+│         │     │  POST /signin│     │    CHECK    │     │   JWT    │
+└─────────┘     └──────────────┘     └─────────────┘     └──────────┘
+                                                            │
+                                                            ▼
+                                                    ┌──────────────┐
+                                                    │   SET COOKIE │
+                                                    │  (HTTPONLY)  │
+                                                    └──────────────┘
+                                                            │
+                                                            ▼
+                                                    ┌──────────────┐
+                                                    │   RESPONSE   │
+                                                    │   200 OK     │
+                                                    └──────────────┘
+```
+
+## Token Verification Flow
+
+```
+┌─────────┐     ┌──────────────┐     ┌─────────────┐     ┌──────────┐
+│  USER   │────►│  PROTECTED   │────►│  MIDDLEWARE │────►│  DECODE  │
+│ Request │     │  ROUTE       │     │   isAuth    │     │   JWT    │
+└─────────┘     └──────────────┘     └─────────────┘     └──────────┘
+                                                            │
+                                          ┌───────────────┴───────────────┐
+                                          ▼                               ▼
+                                  ┌──────────────┐               ┌──────────────┐
+                                  │    VALID     │               │   INVALID    │
+                                  │   Add User   │               │    400       │
+                                  │   to Req     │               │   Error      │
+                                  └──────────────┘               └──────────────┘
+                                          │
+                                          ▼
+                                  ┌──────────────┐
+                                  │  CONTROLLER  │
+                                  └──────────────┘
+```
+
+---
+
+# 10. APPLICATION FLOW (STEPWISE)
+# ============================================================================
+
+## Full Lifecycle from App Start
+
+### 1. Backend Startup
+```
+index.js
+  ↓
+Load .env variables
+  ↓
+Connect to MongoDB (connectDb)
+  ↓
+Init Socket.io Server
+  ↓
+Apply Middleware (CORS, CookieParser)
+  ↓
+Register Routes (/api/*)
+  ↓
+Start Server on PORT
+```
+
+### 2. Frontend Startup
+```
+main.jsx
+  ↓
+Redux Store (Persist Rehydrate)
+  ↓
+App.jsx Mount
+  ↓
+useGetCurrentUser() Hook
+  ↓
+Check Auth API
+```
+
+### 3. API Request Cycle
+```
+Component calls Axios
+  ↓
+Request sent with Cookie
+  ↓
+Backend processes request
+  ↓
+Response returned
+  ↓
+Redux Store updates
+  ↓
+UI Re-renders
+```
+
+---
+
+# 11. BACKEND INTERNAL FLOW
+# ============================================================================
+
+## Request Processing Pipeline
+
+```
+┌─────────────────────────────────────────────────────────────────────────┐
+│                        INCOMING HTTP REQUEST                            │
+└────────────────────────────────┬────────────────────────────────────────┘
+                                 │
+                                 ▼
+┌─────────────────────────────────────────────────────────────────────────┐
+│ 1. ROUTE MATCHING                                                       │
+│    Express router matches URL (e.g., POST /api/auth/signin)             │
+└────────────────────────────────┬────────────────────────────────────────┘
+                                 │
+                                 ▼
+┌─────────────────────────────────────────────────────────────────────────┐
+│ 2. MIDDLEWARE CHAIN                                                     │
+│    ├── cors()                                                           │
+│    ├── express.json()                                                   │
+│    └── isAuth() (if protected)                                          │
+└────────────────────────────────┬────────────────────────────────────────┘
+                                 │
+                                 ▼
+┌─────────────────────────────────────────────────────────────────────────┐
+│ 3. CONTROLLER                                                           │
+│    Business Logic (e.g., signIn in auth.controllers.js)                 │
+└────────────────────────────────┬────────────────────────────────────────┘
+                                 │
+                                 ▼
+┌─────────────────────────────────────────────────────────────────────────┐
+│ 4. MODEL / DATABASE                                                     │
+│    Mongoose Schema -> MongoDB                                           │
+└────────────────────────────────┬────────────────────────────────────────┘
+                                 │
+                                 ▼
+┌─────────────────────────────────────────────────────────────────────────┐
+│ 5. RESPONSE                                                             │
+│    res.status(200).json(...)                                            │
+└─────────────────────────────────────────────────────────────────────────┘
+```
+
+---
+
+# 12. FRONTEND INTERNAL FLOW
+# ============================================================================
+
+## Application Architecture
+
+```
+┌─────────────────────────────────────────────────────────────────────────┐
+│                          FRONTEND ENTRY                                 │
+│                    frontend/src/main.jsx                                │
+└────────────────────────────────┬────────────────────────────────────────┘
+                                 │
+                                 ▼
+┌─────────────────────────────────────────────────────────────────────────┐
+│                       App Component                                     │
+│              frontend/src/App.jsx                                       │
+│                                                                         │
+│  ┌──────────────────────────────────────────────────────────────────┐   │
+│  │  1. Init Global Hooks (useGetCurrent_User, etc.)                 │   │
+│  │                                                                  │   │
+│  │  2. Render Routes (React Router)                                 │   │
+│  │     └── <Routes>                                                 │   │
+│  │         ├── Public: /signin, /signup                             │   │
+│  │         └── Private: /, /cart, /shop/:id                         │   │
+│  └──────────────────────────────────────────────────────────────────┘   │
+└────────────────────────────────┬────────────────────────────────────────┘
+                                 │
+                                 ▼
+┌─────────────────────────────────────────────────────────────────────────┐
+│                      STATE MANAGEMENT                                   │
+│                      (Redux Toolkit)                                    │
+│  ┌────────────────┐  ┌────────────────┐  ┌────────────────┐             │
+│  │ userSlice      │  │ mapSlice       │  │ ownerSlice     │             │
+│  │ - userData     │  │ - location     │  │ - myShopData   │             │
+│  │ - cartItems    │  │ - address      │  │                │             │
+│  └────────────────┘  └────────────────┘  └────────────────┘             │
+```
+
+---
+
+# 13. AUTO API DOCUMENTATION
+# ============================================================================
+
+## API Endpoints Overview
+
+| Method | Endpoint | Description | Auth Required |
+|--------|----------|-------------|---------------|
+| POST | /api/auth/signup | Register new user | No |
+| POST | /api/auth/signin | User login | No |
+| GET | /api/user/current | Get user profile | Yes |
+| POST | /api/shop/create-edit | Create/Edit Shop | Yes |
+| POST | /api/item/add-item | Add Item to Shop | Yes |
+| POST | /api/order/place-order | Place new Order | Yes |
+
+### API Endpoint Details
+
+#### Authentication Endpoints
+
+##### POST /api/auth/signup
+- **Purpose**: Register a new user
+- **HTTP Method**: POST
+- **Route Path**: `/api/auth/signup`
+- **Authentication Required**: No
+
+**Request**:
+```json
+{
+  "fullName": "John Doe",
+  "email": "john@example.com",
+  "password": "password123",
+  "mobile": "1234567890",
+  "role": "user"
+}
+```
+
+**Response** (201 Created):
+```json
+{
+  "_id": "67b2d...",
+  "fullName": "John Doe",
+  "email": "john@example.com",
+  "role": "user",
+  "createdAt": "2025-02-17T..."
+}
+```
+
+**Flow**: Router → Controller → Bcrypt Hash → User.create() → Gen Token → Set Cookie → Response
+
+---
+
+##### POST /api/auth/signin
+- **Purpose**: Authenticate user
+- **HTTP Method**: POST
+- **Route Path**: `/api/auth/signin`
+- **Authentication Required**: No
+
+**Request**:
+```json
+{
+  "email": "john@example.com",
+  "password": "password123"
+}
+```
+
+**Response** (200 OK):
+```json
+{
+  "_id": "67b2d...",
+  "fullName": "John Doe",
+  "email": "john@example.com"
+}
+```
+
+**Flow**: Router → Controller → Find User → Bcrypt Compare → Gen Token → Set Cookie → Response
+
+---
+
+#### User Endpoints
+
+##### GET /api/user/current
+- **Purpose**: Get current logged-in user data
+- **HTTP Method**: GET
+- **Route Path**: `/api/user/current`
+- **Authentication Required**: Yes (Middleware `isAuth`)
+
+**Response** (200 OK):
+```json
+{
+  "_id": "67b2d...",
+  "fullName": "John Doe",
+  "email": "john@example.com",
+  "location": { "type": "Point", "coordinates": [...] }
+}
+```
+
+---
+
+##### POST /api/user/update-location
+- **Purpose**: Update user's geolocation
+- **HTTP Method**: POST
+- **Route Path**: `/api/user/update-location`
+- **Authentication Required**: Yes
+
+**Request**:
+```json
+{
+  "lat": 19.0760,
+  "lon": 72.8777
+}
+```
+
+**Response** (200 OK):
+```json
+{
+  "message": "location updated successfully"
+}
+```
+
+---
+
+#### Shop Endpoints
+
+##### POST /api/shop/create-edit
+- **Purpose**: Create or Update Shop details
+- **HTTP Method**: POST
+- **Route Path**: `/api/shop/create-edit`
+- **Authentication Required**: Yes
+- **Middleware**: `isAuth`, `upload.single("image")`
+
+**Request** (Multipart/Form-Data):
+- `name`: "Tasty Bites"
+- `city`: "Mumbai"
+- `state`: "Maharashtra"
+- `address`: "123 Street"
+- `image`: [File Object]
+
+**Response** (200 OK):
+```json
+{
+  "_id": "shop_id_123",
+  "name": "Tasty Bites",
+  "owner": "user_id_123",
+  "image": "image.jpg"
+}
+```
+
+---
+
+##### GET /api/shop/get-my
+- **Purpose**: Get the current user's shop
+- **HTTP Method**: GET
+- **Route Path**: `/api/shop/get-my`
+- **Authentication Required**: Yes
+
+**Response** (200 OK):
+```json
+{
+  "_id": "shop_id_123",
+  "name": "Tasty Bites",
+  "owner": "user_id_123",
+  "rating": 4.5
+}
+```
+---
+
+##### GET /api/shop/get-by-city/:city
+- **Purpose**: Get all shops in a specific city
+- **HTTP Method**: GET
+- **Route Path**: `/api/shop/get-by-city/:city`
+- **Authentication Required**: Yes
+
+**Response** (200 OK):
+```json
+[
+  {
+    "_id": "shop_id_123",
+    "name": "Tasty Bites",
+    "rating": 4.5
+  }
+]
+```
+
+---
+
+#### Item Endpoints
+
+##### POST /api/item/add-item
+- **Purpose**: Add a new item to the shop
+- **HTTP Method**: POST
+- **Route Path**: `/api/item/add-item`
+- **Authentication Required**: Yes
+- **Middleware**: `isAuth`, `upload.single("image")`
+
+**Request** (Multipart/Form-Data):
+- `name`: "Burger"
+- `price`: 150
+- `category`: "Fast Food"
+- `foodType`: "non veg"
+- `image`: [File Object]
+
+**Response** (200 OK):
+```json
+{
+  "_id": "item_id_123",
+  "name": "Burger",
+  "price": 150,
+  "shop": "shop_id_123"
+}
+```
+---
+
+##### GET /api/item/get-by-id/:itemId
+- **Purpose**: Get item details by ID
+- **HTTP Method**: GET
+- **Route Path**: `/api/item/get-by-id/:itemId`
+- **Authentication Required**: Yes
+
+**Response** (200 OK):
+```json
+{
+  "_id": "item_id_123",
+  "name": "Burger",
+  "price": 150,
+  "description": "Tasty burger"
+}
+```
+---
+
+##### GET /api/item/get-by-shop/:shopId
+- **Purpose**: Get all items for a specific shop
+- **HTTP Method**: GET
+- **Route Path**: `/api/item/get-by-shop/:shopId`
+- **Authentication Required**: Yes
+
+**Response** (200 OK):
+```json
+[
+  {
+    "_id": "item_id_123",
+    "name": "Burger",
+    "price": 150
+  },
+  {
+    "_id": "item_id_124",
+    "name": "Fries",
+    "price": 80
+  }
+]
+```
+
+---
+
+#### Order Endpoints
+
+##### POST /api/order/place-order
+- **Purpose**: Place a new order
+- **HTTP Method**: POST
+- **Route Path**: `/api/order/place-order`
+- **Authentication Required**: Yes
+
+**Request**:
+```json
+{
+  "cartItems": [
+    { "id": "item_id", "quantity": 2, "price": 100 }
+  ],
+  "paymentMethod": "cod",
+  "deliveryAddress": { "text": "Home", "latitude": 19.0, "longitude": 72.8 }
+}
+```
+
+**Response** (200 OK):
+```json
+{
+  "_id": "order_id_123",
+  "status": "pending",
+  "totalAmount": 200
+}
+```
+---
+
+##### POST /api/order/verify-payment
+- **Purpose**: Verify Razorpay payment
+- **HTTP Method**: POST
+- **Route Path**: `/api/order/verify-payment`
+- **Authentication Required**: Yes
+
+**Request**:
+```json
+{
+  "orderId": "order_id_123",
+  "paymentId": "pay_12345",
+  "signature": "sig_12345"
+}
+```
+
+**Response** (200 OK):
+```json
+{
+  "success": true,
+  "message": "Payment verified"
+}
+```
+---
+
+##### GET /api/order/my-orders
+- **Purpose**: Get all orders for the current user
+- **HTTP Method**: GET
+- **Route Path**: `/api/order/my-orders`
+- **Authentication Required**: Yes
+
+**Response** (200 OK):
+```json
+[
+  {
+    "_id": "order_id_123",
+    "status": "pending",
+    "totalAmount": 200,
+    "shopOrders": [...]
+  }
+]
+```
+---
+
+##### POST /api/order/update-status/:id/:sid
+- **Purpose**: Update order status (Shop or Delivery Boy)
+- **HTTP Method**: POST
+- **Route Path**: `/api/order/update-status/:id/:sid`
+- **Authentication Required**: Yes
+
+**Request**:
+```json
+{
+  "status": "cooking"
+}
+```
+
+**Response** (200 OK):
+```json
+{
+  "message": "Order status updated",
+  "status": "cooking"
+}
+```
+
+---
+
+# 14. DEPENDENCIES INSTALLATION
+# ============================================================================
+
+## Backend Setup
+
+### Prerequisites
+- Node.js (v18 or higher)
+- MongoDB
+
+### Installation Steps
+
+```bash
+# Navigate to backend directory
+cd backend
+
+# Install dependencies
+npm install
+
+# Setup environment variables
+# (See Section 15)
+
+# Start development server
+npm run dev
+```
+
+## Frontend Setup
+
+### Installation Steps
+
+```bash
+# Navigate to frontend directory
+cd frontend
+
+# Install dependencies
+npm install
+
+# Start development server
+npm run dev
+```
+
+---
+
+# 15. ENVIRONMENT VARIABLES
+# ============================================================================
+
+## Backend (.env)
+
+| Variable | Description | Example |
+|----------|-------------|---------|
+| PORT | Server Port | 5000 |
+| MONGODB_URL | MongoDB Connection URI | mongodb://localhost:27017/quickbite |
+| JWT_SECRET | Secret for JWT Signing | mysecretkey123 |
+| CLIENT_URL | Frontend URL for CORS | http://localhost:5173 |
+| EMAIL_USER | Specific Email for OTP | test@gmail.com |
+| EMAIL_PASS | Email App Password | xxxx xxxx xxxx |
+| CLOUDINARY_CLOUD_NAME | Cloudinary Cloud Name | myapp |
+| CLOUDINARY_API_KEY | Cloudinary API Key | 123456 |
+| CLOUDINARY_API_SECRET | Cloudinary API Secret | xxx-xxx |
+| RAZORPAY_KEY_ID | Razorpay Key ID | rzp_test_xxx |
+| RAZORPAY_KEY_SECRET | Razorpay Secret | xxx_secret |
+
+---
+
+# 16. HOW TO RUN PROJECT
+# ============================================================================
+
+## Step-by-Step Guide
+
+### Step 1: Clone and Navigate
+```bash
+git clone <repository-url>
+cd QuickBite
+```
+
+### Step 2: Backend Setup
+```bash
+cd backend
+npm install
+npm run dev
+```
+Server should start on `http://localhost:5000`
+
+### Step 3: Frontend Setup
+```bash
+cd frontend
+npm install
+npm run dev
+```
+Frontend should start on `http://localhost:5173`
+
+---
+
+# 17. RUNTIME FLOW (AFTER STARTUP)
+# ============================================================================
+
+## Backend Runtime Flow
+1.  **Initialization**: Express App created, Db Connected, Socket Server Started.
+2.  **Listening**: Waits for HTTP requests & Socket connections.
+3.  **Processing**: Routes -> Controllers -> Services.
+
+## Frontend Runtime Flow
+1.  **Bootstrap**: React mounts to DOM.
+2.  **Auth Check**: `useGetCurrentUser` verifies session.
+3.  **Data Fetch**: Home page fetches shops/items.
+4.  **Interaction**: User clicks -> Redux Updates -> API Calls.
+
+---
+
+# 18. COMMON ERRORS & FIXES
+# ============================================================================
+
+## Backend Errors
+
+### Error: MongoDB Connection Failed
+**Symptom**: `db error` in console.
+**Solution**: Check `MONGODB_URL`. Ensure MongoDB service is running.
+
+### Error: JWT Token Issues
+**Symptom**: `token not found` on protected routes.
+**Solution**: Ensure `withCredentials: true` is set in Axios.
+
+## Frontend Errors
+
+### Error: CORS Policy
+**Symptom**: Blocked by CORS policy in browser console.
+**Solution**: Verify `CLIENT_URL` in backend `.env` matches frontend host.
+
+---
+
+# 19. DEVELOPER NOTES
+# ============================================================================
+
+## Scalability Improvements
+1.  **Redis**: Implement Redis for Socket.io adapter to scale multiple instances.
+2.  **CDN**: Serve static assets via CDN.
+
+## Security Improvements
+1.  **Rate Limiting**: Add `express-rate-limit` middleware.
+2.  **Input Validation**: Use `Joi` or `Zod` for request validation.
+
+## Future Enhancements
+- [ ] Multi-language support.
+- [ ] Push Notifications (FCM).
+- [ ] Advanced Analytics Dashboard.
+
+---
+
+# ============================================================================
+# END OF DOCUMENTATION
+# ============================================================================
