@@ -1,5 +1,5 @@
 # ============================================================================
-# QUICKBITE - COMPREHENSIVE PROJECT DOCUMENTATION
+# QUICKBITE - PROJECT DOCUMENTATION
 # ============================================================================
 
 ## TABLE OF CONTENTS
