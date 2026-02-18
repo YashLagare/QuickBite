@@ -1,7 +1,6 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { io } from "socket.io-client";
-import { serverUrl } from "../App";
 
 const SocketContext = createContext(null);
 
@@ -14,7 +13,10 @@ export const SocketProvider = ({ children }) => {
     const { userData } = useSelector((state) => state.user);
 
     useEffect(() => {
-        const socketInstance = io(serverUrl, { withCredentials: true });
+        const socketInstance = io(
+            import.meta.env.VITE_SERVER_URL || window.location.origin,
+            { withCredentials: true }
+        );
         setSocket(socketInstance);
 
         socketInstance.on("connect", () => {
