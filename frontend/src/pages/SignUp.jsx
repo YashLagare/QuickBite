@@ -102,6 +102,7 @@ function SignUp() {
 
         try {
             const provider = new GoogleAuthProvider();
+            provider.setCustomParameters({ prompt: 'select_account' });
             const result = await signInWithPopup(auth, provider);
 
             const { data } = await axios.post(`${serverUrl}/api/auth/google-auth`, {
@@ -159,8 +160,8 @@ function SignUp() {
                             <input
                                 type="text"
                                 className={`w-full pl-10 pr-4 py-3 bg-white/70 border rounded-xl focus:outline-none focus:ring-2 transition-all duration-200 ${errors.fullName
-                                        ? 'border-red-400 focus:ring-red-400'
-                                        : 'border-gray-200 focus:ring-orange-400/50 focus:border-transparent'
+                                    ? 'border-red-400 focus:ring-red-400'
+                                    : 'border-gray-200 focus:ring-orange-400/50 focus:border-transparent'
                                     }`}
                                 placeholder='Enter your full name'
                                 onChange={(e) => {
@@ -185,8 +186,8 @@ function SignUp() {
                             <input
                                 type="email"
                                 className={`w-full pl-10 pr-4 py-3 bg-white/70 border rounded-xl focus:outline-none focus:ring-2 transition-all duration-200 ${errors.email
-                                        ? 'border-red-400 focus:ring-red-400'
-                                        : 'border-gray-200 focus:ring-orange-400/50 focus:border-transparent'
+                                    ? 'border-red-400 focus:ring-red-400'
+                                    : 'border-gray-200 focus:ring-orange-400/50 focus:border-transparent'
                                     }`}
                                 placeholder='Enter your email'
                                 onChange={(e) => {
@@ -211,8 +212,8 @@ function SignUp() {
                             <input
                                 type="tel"
                                 className={`w-full pl-10 pr-4 py-3 bg-white/70 border rounded-xl focus:outline-none focus:ring-2 transition-all duration-200 ${errors.mobile
-                                        ? 'border-red-400 focus:ring-red-400'
-                                        : 'border-gray-200 focus:ring-orange-400/50 focus:border-transparent'
+                                    ? 'border-red-400 focus:ring-red-400'
+                                    : 'border-gray-200 focus:ring-orange-400/50 focus:border-transparent'
                                     }`}
                                 placeholder='Enter 10-digit mobile number'
                                 onChange={(e) => {
@@ -238,8 +239,8 @@ function SignUp() {
                             <input
                                 type={showPassword ? "text" : "password"}
                                 className={`w-full pl-10 pr-12 py-3 bg-white/70 border rounded-xl focus:outline-none focus:ring-2 transition-all duration-200 ${errors.password
-                                        ? 'border-red-400 focus:ring-red-400'
-                                        : 'border-gray-200 focus:ring-orange-400/50 focus:border-transparent'
+                                    ? 'border-red-400 focus:ring-red-400'
+                                    : 'border-gray-200 focus:ring-orange-400/50 focus:border-transparent'
                                     }`}
                                 placeholder='Enter your password'
                                 onChange={(e) => {
@@ -276,8 +277,8 @@ function SignUp() {
                                         type='button'
                                         onClick={() => setRole(key)}
                                         className={`flex flex-col items-center gap-2 p-3 rounded-xl border-2 transition-all duration-300 ${isSelected
-                                                ? 'border-orange-500 bg-orange-50 shadow-sm'
-                                                : 'border-gray-200 hover:border-gray-300'
+                                            ? 'border-orange-500 bg-orange-50 shadow-sm'
+                                            : 'border-gray-200 hover:border-gray-300'
                                             }`}
                                     >
                                         <div className={`p-2 rounded-lg ${isSelected ? 'bg-gradient-to-r ' + config.color : 'bg-gray-100'}`}>

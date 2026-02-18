@@ -93,7 +93,7 @@ export const sendOtp=async (req,res) => {
     user.otpExpires=Date.now()+5*60*1000
     user.isOtpVerified=false
     await user.save()
-    await sendOtpMail(email,otp)
+    sendOtpMail(email,otp).catch(err => console.log("mail error", err))
     return res.status(200).json({message:"otp sent successfully"})
   } catch (error) {
      return res.status(500).json(`send otp error ${error}`)
