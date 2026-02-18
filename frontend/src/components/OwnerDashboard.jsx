@@ -2,7 +2,7 @@ import { MapPin, Pencil, Plus, Store, UtensilsCrossed } from 'lucide-react'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import Nav from './Nav'
-import OwnerItemCard from './ownerItemCard'
+import OwnerItemCard from './OwnerItemCard'
 
 function OwnerDashboard() {
   const { myShopData } = useSelector(state => state.owner)
@@ -18,7 +18,7 @@ function OwnerDashboard() {
       </div>
 
       <Nav />
-      
+
       {/* No Shop - Onboarding Empty State */}
       {!myShopData && (
         <div className='relative flex justify-center items-center min-h-[calc(100vh-5rem)] px-4 pt-20 pb-8'>
@@ -26,12 +26,12 @@ function OwnerDashboard() {
           <div className="absolute inset-0 flex justify-center items-center pointer-events-none">
             <div className="w-[600px] h-[600px] bg-gradient-to-r from-orange-200/20 to-amber-200/20 rounded-full blur-3xl" />
           </div>
-          
+
           <div className='relative w-full max-w-md bg-white/90 backdrop-blur-sm rounded-3xl shadow-xl border border-white/60 p-8 sm:p-10'>
             {/* Decorative Corner Accents */}
             <div className="absolute -top-2 -left-2 w-24 h-24 bg-gradient-to-br from-[#ff4d2d]/10 to-transparent rounded-tl-3xl" />
             <div className="absolute -bottom-2 -right-2 w-24 h-24 bg-gradient-to-tl from-[#ff6b4a]/10 to-transparent rounded-br-3xl" />
-            
+
             {/* Icon */}
             <div className='flex justify-center mb-6'>
               <div className='relative'>
@@ -53,8 +53,8 @@ function OwnerDashboard() {
             </div>
 
             {/* CTA Button */}
-            <button 
-              className='w-full mt-8 bg-gradient-to-r from-[#ff4d2d] via-[#ff6b4a] to-[#ff8a6a] text-white px-6 py-4 rounded-xl font-semibold shadow-lg shadow-orange-500/30 hover:shadow-xl hover:shadow-orange-500/40 transition-all duration-300 hover:-translate-y-0.5 active:translate-y-0 active:shadow-md outline-none focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-4 focus-visible:ring-offset-[#fff7f3]' 
+            <button
+              className='w-full mt-8 bg-gradient-to-r from-[#ff4d2d] via-[#ff6b4a] to-[#ff8a6a] text-white px-6 py-4 rounded-xl font-semibold shadow-lg shadow-orange-500/30 hover:shadow-xl hover:shadow-orange-500/40 transition-all duration-300 hover:-translate-y-0.5 active:translate-y-0 active:shadow-md outline-none focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-4 focus-visible:ring-offset-[#fff7f3]'
               onClick={() => navigate("/create-edit-shop")}
               aria-label="Create your restaurant"
             >
@@ -72,25 +72,25 @@ function OwnerDashboard() {
       {/* Has Shop - Dashboard View */}
       {myShopData && (
         <div className='relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-12 space-y-8'>
-          
+
 
           {/* Shop Details Card */}
           <div className='group relative'>
             {/* Background Glow */}
             <div className="absolute -inset-1 bg-gradient-to-r from-[#ff4d2d]/20 to-[#ff6b4a]/20 rounded-3xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-            
+
             <div className='relative bg-white/90 backdrop-blur-sm rounded-2xl shadow-lg border border-white/60 overflow-hidden'>
-              
+
               {/* Hero Image Section */}
               <div className='relative h-56 sm:h-64 overflow-hidden bg-gradient-to-br from-gray-100 to-gray-50'>
-                <img 
-                  src={myShopData.image} 
-                  alt={myShopData.name} 
+                <img
+                  src={myShopData.image}
+                  alt={myShopData.name}
                   className='w-full h-full object-cover transition-transform duration-700 group-hover:scale-110'
                 />
                 {/* Elegant Overlay Gradient */}
                 <div className='absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent' />
-                
+
                 {/* Restaurant Name on Image */}
                 <div className='absolute bottom-0 left-0 right-0 p-6'>
                   <h2 className='text-2xl sm:text-3xl font-bold text-white drop-shadow-lg tracking-tight'>
@@ -99,8 +99,8 @@ function OwnerDashboard() {
                 </div>
 
                 {/* Edit Button - Premium Glass Style */}
-                <button 
-                  className='absolute top-4 right-4 bg-white/90 backdrop-blur-md text-gray-700 p-3 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-0.5 active:translate-y-0 border border-white/60 outline-none focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-2' 
+                <button
+                  className='absolute top-4 right-4 bg-white/90 backdrop-blur-md text-gray-700 p-3 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-0.5 active:translate-y-0 border border-white/60 outline-none focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-2'
                   onClick={() => navigate("/create-edit-shop")}
                   aria-label="Edit restaurant details"
                 >
@@ -120,10 +120,10 @@ function OwnerDashboard() {
                       {myShopData.city}, {myShopData.state}
                     </span>
                   </div>
-                  
+
                   {/* Divider */}
                   <div className='hidden sm:block w-px h-5 bg-gradient-to-b from-orange-200/60 to-transparent'></div>
-                  
+
                   {/* Address */}
                   <div className='flex items-start gap-2.5 flex-1'>
                     <span className='text-sm text-gray-600 leading-relaxed'>
@@ -142,9 +142,9 @@ function OwnerDashboard() {
               <div className="absolute inset-0 flex justify-center items-center">
                 <div className="w-[400px] h-[400px] bg-gradient-to-r from-orange-100/30 to-amber-100/30 rounded-full blur-3xl" />
               </div>
-              
+
               <div className='relative w-full max-w-2xl bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-white/60 p-8 sm:p-10'>
-                
+
                 {/* Icon */}
                 <div className='flex justify-center mb-6'>
                   <div className='relative'>
@@ -166,8 +166,8 @@ function OwnerDashboard() {
                 </div>
 
                 {/* CTA */}
-                <button 
-                  className='w-full mt-6 bg-gradient-to-r from-[#ff4d2d] via-[#ff6b4a] to-[#ff8a6a] text-white px-6 py-4 rounded-xl font-semibold shadow-lg shadow-orange-500/30 hover:shadow-xl hover:shadow-orange-500/40 transition-all duration-300 hover:-translate-y-0.5 active:translate-y-0 active:shadow-md outline-none focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-4 focus-visible:ring-offset-[#fff7f3]' 
+                <button
+                  className='w-full mt-6 bg-gradient-to-r from-[#ff4d2d] via-[#ff6b4a] to-[#ff8a6a] text-white px-6 py-4 rounded-xl font-semibold shadow-lg shadow-orange-500/30 hover:shadow-xl hover:shadow-orange-500/40 transition-all duration-300 hover:-translate-y-0.5 active:translate-y-0 active:shadow-md outline-none focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-4 focus-visible:ring-offset-[#fff7f3]'
                   onClick={() => navigate("/add-item")}
                   aria-label="Add your first menu item"
                 >
@@ -180,7 +180,7 @@ function OwnerDashboard() {
           {/* Items Section - Has Items */}
           {myShopData.items.length > 0 && (
             <div className='space-y-6'>
-              
+
               {/* Section Header */}
               <div className='bg-white/80 backdrop-blur-sm rounded-xl shadow-sm border border-white/60 p-5'>
                 <div className='flex items-center justify-between flex-wrap gap-4'>
@@ -192,8 +192,8 @@ function OwnerDashboard() {
                       {myShopData.items.length} {myShopData.items.length === 1 ? 'item' : 'items'} available
                     </p>
                   </div>
-                  
-                  <button 
+
+                  <button
                     className='flex items-center gap-2 bg-gradient-to-r from-[#ff4d2d] via-[#ff6b4a] to-[#ff8a6a] text-white px-5 py-2.5 rounded-xl font-semibold shadow-md shadow-orange-500/30 hover:shadow-lg hover:shadow-orange-500/40 transition-all duration-300 hover:-translate-y-0.5 active:translate-y-0 active:shadow-sm outline-none focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-2 focus-visible:ring-offset-[#fff7f3]'
                     onClick={() => navigate("/add-item")}
                     aria-label="Add new menu item"
@@ -214,7 +214,7 @@ function OwnerDashboard() {
               </div>
             </div>
           )}
-            
+
         </div>
       )}
     </div>
