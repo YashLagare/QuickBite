@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { categories } from '../category';
 import CategoryCard from './CategoryCard';
 import FoodCard from './FoodCard';
-import Nav from './NaV.JSX';
+import Nav from './Nav';
 
 function UserDashboard() {
   const { currentCity, shopInMyCity, itemsInMyCity, searchItems } = useSelector(state => state.user);
@@ -86,7 +86,7 @@ function UserDashboard() {
 
       {/* Main Content Container */}
       <div className='w-full max-w-7xl flex flex-col gap-10 px-4 sm:px-6 lg:px-8 pt-8 pb-16'>
-        
+
         {/* Search Results Section */}
         {searchItems && searchItems.length > 0 && (
           <section className='w-full'>
@@ -97,7 +97,7 @@ function UserDashboard() {
                 </h2>
                 <div className='h-1 w-20 bg-gradient-to-r from-[#ff6b4a] to-[#ff8f6b] rounded-full mt-3'></div>
               </div>
-              
+
               <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6'>
                 {searchItems.map((item) => (
                   <FoodCard data={item} key={item._id} />
