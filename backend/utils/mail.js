@@ -1,14 +1,17 @@
-import nodemailer from "nodemailer"
-import dotenv from "dotenv"
+import dotenv from "dotenv";
+import nodemailer from "nodemailer";
 dotenv.config()
 const transporter = nodemailer.createTransport({
-  service: "Gmail",
-  port: 465,
-  secure: true, // true for 465, false for other ports
+  host: "smtp.gmail.com",
+  port: 587,
+  secure: false,
   auth: {
     user: process.env.EMAIL,
     pass: process.env.PASS,
   },
+  tls: {
+    rejectUnauthorized: false
+  }
 });
 
 export const sendOtpMail=async (to,otp) => {
