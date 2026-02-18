@@ -23,7 +23,7 @@ import SignIn from './pages/SignIn'
 import SignUp from './pages/SignUp'
 import TrackOrderPage from './pages/TrackOrderPage'
 
-export const serverUrl = "http://localhost:8000"
+export const serverUrl = import.meta.env.VITE_SERVER_URL || "http://localhost:8000"
 
 function App() {
   const { userData } = useSelector(state => state.user)
