@@ -77,7 +77,7 @@ export const deleteItem = async (req, res) => {
             return res.status(400).json({ message: "item not found" })
         }
         const shop = await Shop.findOne({ owner: req.userId })
-        shop.items = shop.items.filter(i => i !== item._id)
+        shop.items = shop.items.filter(i => i.toString() !== item._id.toString())
         await shop.save()
         await shop.populate({
             path: "items",

@@ -1,50 +1,70 @@
-import express from "express"
-import dotenv from "dotenv"
-dotenv.config()
-import connectDb from "./config/db.js"
-import cookieParser from "cookie-parser"
-import authRouter from "./routes/auth.routes.js"
-import cors from "cors"
-import userRouter from "./routes/user.routes.js"
+import cookieParser from "cookie-parser";
+import cors from "cors";
+import dotenv from "dotenv";
+import express from "express";
+import connectDb from "./config/db.js";
+import authRouter from "./routes/auth.routes.js";
+import userRouter from "./routes/user.routes.js";
+dotenv.config();
 
-import itemRouter from "./routes/item.routes.js"
-import shopRouter from "./routes/shop.routes.js"
-import orderRouter from "./routes/order.routes.js"
-import http from "http"
-import { Server } from "socket.io"
-import { socketHandler } from "./socket.js"
+import path from "path";
 
-const app=express()
-const server=http.createServer(app)
+import http from "http";
+import { Server } from "socket.io";
+import itemRouter from "./routes/item.routes.js";
+import orderRouter from "./routes/order.routes.js";
+import shopRouter from "./routes/shop.routes.js";
+import { socketHandler } from "./socket.js";
 
-const io=new Server(server,{
-   cors:{
-    origin:"http://localhost:5173",
-    credentials:true,
-    methods:['POST','GET']
+import fs from "fs";
+if (!fs.existsSync("./public")) {
+  fs.mkdirSync("./public")
 }
-})
 
-app.set("io",io)
+const __dirname = path.resolve();
 
+const app = express();
+const server = http.createServer(app);
 
+const allowedOrigin = process.env.CLIENT_URL;
 
-const port=process.env.PORT || 5000
-app.use(cors({
-    origin:"http://localhost:5173",
-    credentials:true
-}))
-app.use(express.json())
-app.use(cookieParser())
-app.use("/api/auth",authRouter)
-app.use("/api/user",userRouter)
-app.use("/api/shop",shopRouter)
-app.use("/api/item",itemRouter)
-app.use("/api/order",orderRouter)
+const io = new Server(server, {
+  cors: {
+    origin: allowedOrigin,
+    credentials: true,
+  },
+});
 
-socketHandler(io)
-server.listen(port,()=>{
-    connectDb()
-    console.log(`server started at ${port}`)
-})
+app.set("io", io);
 
+const port = process.env.PORT || 5000;
+app.use(
+  cors({
+    origin: allowedOrigin,
+    credentials: true,
+  }),
+);
+
+app.use(express.json());
+app.use(cookieParser());
+
+app.use("/api/auth", authRouter);
+app.use("/api/user", userRouter);
+app.use("/api/shop", shopRouter);
+app.use("/api/item", itemRouter);
+app.use("/api/order", orderRouter);
+
+if (process.env.NODE_ENV === "production")
+  (app.use(express.static(path.join(__dirname, "../frontend/dist"))),
+    app.get("*", (req, res) =>
+      res.sendFile(
+        path.resolve(__dirname, "../frontend", "dist", "index.html"),
+      ),
+    ));
+
+socketHandler(io);
+
+server.listen(port, () => {
+  connectDb();
+  console.log(`server started at ${port}`);
+});
