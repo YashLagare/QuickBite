@@ -1,4 +1,7 @@
 import axios from 'axios';
+import L from 'leaflet';
+import icon from 'leaflet/dist/images/marker-icon.png';
+import iconShadow from 'leaflet/dist/images/marker-shadow.png';
 import "leaflet/dist/leaflet.css";
 import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
@@ -15,6 +18,15 @@ import { ClipLoader } from 'react-spinners';
 import { serverUrl } from '../App';
 import { setAddress, setLocation } from '../redux/mapSlice';
 import { addMyOrder, clearCart } from '../redux/userSlice';
+
+let DefaultIcon = L.icon({
+  iconUrl: icon,
+  shadowUrl: iconShadow,
+  iconSize: [25, 41],
+  iconAnchor: [12, 41]
+});
+
+L.Marker.prototype.options.icon = DefaultIcon;
 
 function RecenterMap({ location }) {
   if (location.lat && location.lon) {
@@ -157,6 +169,12 @@ function CheckOut() {
   useEffect(() => {
     setAddressInput(address);
   }, [address]);
+
+  useEffect(() => {
+    if (userData?.location?.coordinates && !address) {
+      getCurrentLocation();
+    }
+  }, [userData]);
 
   return (
     <div className='min-h-screen bg-gradient-to-br from-[#fff7f3] via-[#fffdfb] to-[#ffece6] flex items-center justify-center p-4 sm:p-6 relative'>

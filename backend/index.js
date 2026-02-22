@@ -26,7 +26,7 @@ const __dirname = path.resolve();
 const app = express();
 const server = http.createServer(app);
 
-const allowedOrigin = process.env.CLIENT_URL;
+const allowedOrigin = process.env.CLIENT_URL || "http://localhost:5173";
 
 const io = new Server(server, {
   cors: {
