@@ -1,5 +1,5 @@
 import axios from "axios";
-import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
+import { getRedirectResult, GoogleAuthProvider, signInWithRedirect } from 'firebase/auth';
 import { useState } from 'react';
 import toast from 'react-hot-toast';
 import { FaEnvelope, FaLock, FaPhone, FaRegEye, FaRegEyeSlash, FaUser } from "react-icons/fa";
@@ -103,7 +103,9 @@ function SignUp() {
         try {
             const provider = new GoogleAuthProvider();
             provider.setCustomParameters({ prompt: 'select_account' });
-            const result = await signInWithPopup(auth, provider);
+            await signInWithRedirect(auth, provider);
+            const result = await getRedirectResult(auth);
+            if (!result) return;
 
             const { data } = await axios.post(`${serverUrl}/api/auth/google-auth`, {
                 fullName: result.user.displayName,

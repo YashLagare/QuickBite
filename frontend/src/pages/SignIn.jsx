@@ -1,5 +1,5 @@
 import axios from "axios";
-import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
+import { getRedirectResult, GoogleAuthProvider, signInWithRedirect } from 'firebase/auth';
 import { useState } from 'react';
 import toast from 'react-hot-toast';
 import { FaEnvelope, FaLock, FaRegEye, FaRegEyeSlash } from "react-icons/fa";
@@ -70,7 +70,9 @@ function SignIn() {
         try {
             const provider = new GoogleAuthProvider();
             provider.setCustomParameters({ prompt: 'select_account' });
-            const result = await signInWithPopup(auth, provider);
+            await signInWithRedirect(auth, provider);
+            const result = await getRedirectResult(auth);
+            if (!result) return;
 
             const { data } = await axios.post(`${serverUrl}/api/auth/google-auth`, {
                 email: result.user.email,
@@ -130,8 +132,8 @@ function SignIn() {
                             type="email"
                             id="email"
                             className={`w-full bg-white/70 border rounded-xl pl-10 pr-4 py-3 focus:outline-none focus:ring-2 transition-all duration-200 ${errors.email
-                                    ? 'border-red-400 focus:ring-red-400'
-                                    : 'border-gray-200 focus:ring-orange-400'
+                                ? 'border-red-400 focus:ring-red-400'
+                                : 'border-gray-200 focus:ring-orange-400'
                                 }`}
                             placeholder='Enter your email'
                             onChange={handleEmailChange}
@@ -155,8 +157,8 @@ function SignIn() {
                             type={showPassword ? "text" : "password"}
                             id="password"
                             className={`w-full bg-white/70 border rounded-xl pl-10 pr-12 py-3 focus:outline-none focus:ring-2 transition-all duration-200 ${errors.password
-                                    ? 'border-red-400 focus:ring-red-400'
-                                    : 'border-gray-200 focus:ring-orange-400'
+                                ? 'border-red-400 focus:ring-red-400'
+                                : 'border-gray-200 focus:ring-orange-400'
                                 }`}
                             placeholder='Enter your password'
                             onChange={handlePasswordChange}
