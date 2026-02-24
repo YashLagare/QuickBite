@@ -25,7 +25,7 @@ export const sendOtpMail=async (to,otp) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        from: "QuickBite <noreply@yourdomain.com>", // Replace with your verified domain
+        from: process.env.EMAIL,
         to: [to],
         subject: "Reset Your Password",
         html: `<h1>Your OTP for password reset is ${otp}. It expires in 5 minutes.</h1>`,
