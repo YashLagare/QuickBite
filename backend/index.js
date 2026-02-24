@@ -18,7 +18,7 @@ import { socketHandler } from "./socket.js";
 
 import fs from "fs";
 if (!fs.existsSync("./public")) {
-  fs.mkdirSync("./public")
+  fs.mkdirSync("./public");
 }
 
 const __dirname = path.resolve();
@@ -26,7 +26,7 @@ const __dirname = path.resolve();
 const app = express();
 const server = http.createServer(app);
 
-const allowedOrigin = process.env.CLIENT_URL || "http://localhost:5173";
+const allowedOrigin = process.env.NODE_ENV === "production" ? true : (process.env.CLIENT_URL || "http://localhost:5173");
 
 const io = new Server(server, {
   cors: {
@@ -44,6 +44,23 @@ app.use(
     credentials: true,
   }),
 );
+
+// const allowedOrigin =
+//   process.env.NODE_ENV === "production" ? true : "http://localhost:5173";
+
+// app.use(
+//   cors({
+//     origin: allowedOrigin,
+//     credentials: true,
+//   }),
+// );
+
+// const io = new Server(server, {
+//   cors: {
+//     origin: allowedOrigin,
+//     credentials: true,
+//   },
+// });
 
 app.use(express.json());
 app.use(cookieParser());
