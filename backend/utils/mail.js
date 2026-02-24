@@ -1,5 +1,6 @@
 import dotenv from "dotenv";
 import nodemailer from "nodemailer";
+import { Resend } from "resend";
 dotenv.config()
 
 const transporter = nodemailer.createTransport({
@@ -15,23 +16,20 @@ const transporter = nodemailer.createTransport({
   }
 });
 
+const resend = new Resend(process.env.RESEND_API_KEY);
+
 export const sendOtpMail=async (to,otp) => {
   if (process.env.NODE_ENV === "production") {
     // Use Resend for production
-    const response = await fetch("https://api.resend.com/emails", {
-      method: "POST",
-      headers: {
-        "Authorization": `Bearer ${process.env.RESEND_API_KEY}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
+    try {
+      await resend.emails.send({
         from: process.env.EMAIL,
-        to: [to],
+        to: to,
         subject: "Reset Your Password",
         html: `<h1>Your OTP for password reset is ${otp}. It expires in 5 minutes.</h1>`,
-      }),
-    });
-    if (!response.ok) {
+      });
+    } catch (error) {
+      console.log("Resend error:", error);
       throw new Error("Failed to send email via Resend");
     }
   } else {
@@ -46,10 +44,26 @@ export const sendOtpMail=async (to,otp) => {
 }
 
 export const sendDeliveryOtpMail=async (user,otp) => {
-  await transporter.sendMail({
-    from:process.env.EMAIL,
-    to:user.email,
-    subject:"Delivery OTP",
-    html:`<h1>Your OTP for delivery is ${otp}. It expires in 5 minutes.</h1>`
-  })
+  if (process.env.NODE_ENV === "production") {
+    // Use Resend for production
+    try {
+      await resend.emails.send({
+        from: process.env.EMAIL,
+        to: user.email,
+        subject: "Delivery OTP",
+        html: `<h1>Your OTP for delivery is ${otp}. It expires in 5 minutes.</h1>`,
+      });
+    } catch (error) {
+      console.log("Resend error:", error);
+      throw new Error("Failed to send email via Resend");
+    }
+  } else {
+    // Use Gmail SMTP for development
+    await transporter.sendMail({
+      from:process.env.EMAIL,
+      to:user.email,
+      subject:"Delivery OTP",
+      html:`<h1>Your OTP for delivery is ${otp}. It expires in 5 minutes.</h1>`
+    })
+  }
 }
