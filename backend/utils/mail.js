@@ -22,15 +22,19 @@ export const sendOtpMail=async (to,otp) => {
   if (process.env.NODE_ENV === "production") {
     // Use Resend for production
     try {
-      const result = await resend.emails.send({
+      const { data, error } = await resend.emails.send({
         from: "QuickBite <onboarding@resend.dev>",
-        to: to,
+        to: [to],
         subject: "Reset Your Password",
         html: `<h1>Your OTP for password reset is ${otp}. It expires in 5 minutes.</h1>`,
       });
-      console.log("Email sent successfully:", result);
+      if (error) {
+        console.error("Resend error:", error);
+        throw new Error("Failed to send email via Resend: " + error.message);
+      }
+      console.log("Email sent successfully:", data);
     } catch (error) {
-      console.error("Resend error:", error);
+      console.error("Resend catch error:", error);
       throw new Error("Failed to send email via Resend");
     }
   } else {
@@ -48,15 +52,19 @@ export const sendDeliveryOtpMail=async (user,otp) => {
   if (process.env.NODE_ENV === "production") {
     // Use Resend for production
     try {
-      const result = await resend.emails.send({
+      const { data, error } = await resend.emails.send({
         from: "QuickBite <onboarding@resend.dev>",
-        to: user.email,
+        to: [user.email],
         subject: "Delivery OTP",
         html: `<h1>Your OTP for delivery is ${otp}. It expires in 5 minutes.</h1>`,
       });
-      console.log("Email sent successfully:", result);
+      if (error) {
+        console.error("Resend error:", error);
+        throw new Error("Failed to send email via Resend: " + error.message);
+      }
+      console.log("Email sent successfully:", data);
     } catch (error) {
-      console.error("Resend error:", error);
+      console.error("Resend catch error:", error);
       throw new Error("Failed to send email via Resend");
     }
   } else {
