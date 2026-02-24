@@ -23,7 +23,7 @@ export const sendOtpMail=async (to,otp) => {
     // Use Resend for production
     try {
       const result = await resend.emails.send({
-        from: "onboarding@resend.dev",
+        from: "QuickBite <onboarding@resend.dev>",
         to: to,
         subject: "Reset Your Password",
         html: `<h1>Your OTP for password reset is ${otp}. It expires in 5 minutes.</h1>`,
@@ -49,7 +49,7 @@ export const sendDeliveryOtpMail=async (user,otp) => {
     // Use Resend for production
     try {
       const result = await resend.emails.send({
-        from: "onboarding@resend.dev",
+        from: "QuickBite <onboarding@resend.dev>",
         to: user.email,
         subject: "Delivery OTP",
         html: `<h1>Your OTP for delivery is ${otp}. It expires in 5 minutes.</h1>`,
