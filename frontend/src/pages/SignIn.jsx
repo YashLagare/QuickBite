@@ -3,7 +3,6 @@ import { getRedirectResult, GoogleAuthProvider, signInWithRedirect } from 'fireb
 import { useState } from 'react';
 import toast from 'react-hot-toast';
 import { FaEnvelope, FaLock, FaRegEye, FaRegEyeSlash } from "react-icons/fa";
-import { FcGoogle } from "react-icons/fc";
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { ClipLoader } from 'react-spinners';
@@ -206,13 +205,13 @@ function SignIn() {
                 </div>
 
                 {/* Google Sign In Button */}
-                <button
+                 {/*<button
                     className='w-full flex items-center justify-center gap-3 bg-white border border-gray-300 rounded-xl px-4 py-3 hover:bg-gray-50 hover:shadow-md transition-all duration-300'
                     onClick={handleGoogleAuth}
                 >
                     <FcGoogle size={22} />
                     <span className='font-medium text-gray-700'>Continue with Google</span>
-                </button>
+                </button>*/}
 
                 {/* Sign Up Link */}
                 <div className='text-center mt-6'>

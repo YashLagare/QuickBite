@@ -30,9 +30,9 @@ console.log("====================\n");
 export const sendOtpMail=async (to,otp) => {
   console.log("📧 sendOtpMail called for:", to);
   
-  if (process.env.NODE_ENV === "production") {
-    console.log("🚀 Using SENDGRID (Production Mode)");
-    // Use SendGrid for production
+  // prefer SendGrid if API key is available (even in dev)
+  if (process.env.SENDGRID_API_KEY) {
+    console.log("🚀 Using SENDGRID (API key present)");
     try {
       console.log("Sending via SendGrid API...");
       const msg = {
@@ -48,11 +48,18 @@ export const sendOtpMail=async (to,otp) => {
     } catch (error) {
       console.error("❌ SendGrid Error:", error.message);
       console.error("Full Error:", JSON.stringify(error, null, 2));
-      throw new Error("Failed to send email via SendGrid: " + error.message);
+      // fall back to SMTP if sendgrid fails
+      console.log("⚠️ Falling back to Gmail SMTP due to SendGrid error");
+      await transporter.sendMail({
+        from: process.env.EMAIL,
+        to,
+        subject: "Reset Your Password",
+        html: `<h1>Your OTP for password reset is ${otp}. It expires in 5 minutes.</h1>`
+      });
+      console.log("✅ Email sent successfully via Gmail SMTP (fallback)");
     }
   } else {
-    console.log("📧 Using GMAIL SMTP (Development Mode)");
-    // Use Gmail SMTP for development
+    console.log("📧 Using GMAIL SMTP (No SendGrid key)");
     await transporter.sendMail({
       from: process.env.EMAIL,
       to,
@@ -66,9 +73,8 @@ export const sendOtpMail=async (to,otp) => {
 export const sendDeliveryOtpMail=async (user,otp) => {
   console.log("📧 sendDeliveryOtpMail called for:", user.email);
   
-  if (process.env.NODE_ENV === "production") {
-    console.log("🚀 Using SENDGRID (Production Mode)");
-    // Use SendGrid for production
+  if (process.env.SENDGRID_API_KEY) {
+    console.log("🚀 Using SENDGRID (API key present)");
     try {
       console.log("Sending via SendGrid API...");
       const msg = {
@@ -84,11 +90,17 @@ export const sendDeliveryOtpMail=async (user,otp) => {
     } catch (error) {
       console.error("❌ SendGrid Error:", error.message);
       console.error("Full Error:", JSON.stringify(error, null, 2));
-      throw new Error("Failed to send email via SendGrid: " + error.message);
+      console.log("⚠️ Falling back to Gmail SMTP due to SendGrid error");
+      await transporter.sendMail({
+        from:process.env.EMAIL,
+        to:user.email,
+        subject:"Delivery OTP",
+        html:`<h1>Your OTP for delivery is ${otp}. It expires in 5 minutes.</h1>`
+      });
+      console.log("✅ Email sent successfully via Gmail SMTP (fallback)");
     }
   } else {
-    console.log("📧 Using GMAIL SMTP (Development Mode)");
-    // Use Gmail SMTP for development
+    console.log("📧 Using GMAIL SMTP (No SendGrid key)");
     await transporter.sendMail({
       from:process.env.EMAIL,
       to:user.email,
