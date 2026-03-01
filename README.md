@@ -196,7 +196,7 @@ backend/
 │   ├── shop.routes.js        # Shop API endpoints
 │   └── user.routes.js        # User API endpoints
 ├── utils/
-│   ├── mail.js               # Email sending utility (Nodemailer)
+│   ├── mail.js               # Email sending utility (Nodemailer + SendGrid support with Gmail SMTP fallback)
 │   └── token.js              # JWT generation utility
 ├── index.js                  # App entry point (Express app, Routes, CORS, Socket.io)
 └── socket.js                 # Socket.io event listners (Order updates, Broadcasting)
@@ -981,8 +981,12 @@ npm run dev
 | MONGODB_URL | MongoDB Connection URI | mongodb://localhost:27017/quickbite |
 | JWT_SECRET | Secret for JWT Signing | mysecretkey123 |
 | CLIENT_URL | Frontend URL for CORS | http://localhost:5173 |
-| EMAIL_USER | Specific Email for OTP | test@gmail.com |
-| EMAIL_PASS | Email App Password | xxxx xxxx xxxx |
+| EMAIL | Sender email address used for OTPs and notifications | youraddress@gmail.com |
+| PASS | Password or app-specific password for the sender email | xxxx-xxxx-xxxx |
+| SENDGRID_API_KEY | *(optional)* API key for SendGrid. When provided, emails are sent via SendGrid; otherwise Gmail SMTP is used. | SG.xxxxxxxx |
+
+> **Email configuration note:** `mail.js` logs at startup which service will be used. If `SENDGRID_API_KEY` is missing or SendGrid sending fails, it automatically falls back to the Gmail SMTP transporter configured via `EMAIL`/`PASS`.
+
 | CLOUDINARY_CLOUD_NAME | Cloudinary Cloud Name | myapp |
 | CLOUDINARY_API_KEY | Cloudinary API Key | 123456 |
 | CLOUDINARY_API_SECRET | Cloudinary API Secret | xxx-xxx |
