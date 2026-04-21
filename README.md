@@ -2,6 +2,9 @@
 # QUICKBITE - PROJECT DOCUMENTATION
 # ============================================================================
 
+<img width="1919" height="909" alt="image" src="https://github.com/user-attachments/assets/ed8490a5-ba37-4890-8551-098d290b7280" />
+
+
 ## TABLE OF CONTENTS
 
 1. Project Overview
